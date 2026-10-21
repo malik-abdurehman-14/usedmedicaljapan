@@ -1,0 +1,118 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+  Design tokens — Used Medical Equipment Japan
+  Ink navy for authority, clinical cool white, instrument teal for actions,
+  and seal red used ONLY for the inspection seal (検品済) mark.
+*/
+@theme {
+  --font-sans: "IBM Plex Sans", "IBM Plex Sans JP", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+
+  --color-ink: #0e2a47;
+  --color-ink-soft: #1c3d61;
+  --color-paper: #f5f7fa;
+  --color-mist: #eaeff4;
+  --color-line: #d5dde6;
+  --color-slate: #56687b;
+  --color-teal: #0f7c8c;
+  --color-teal-dark: #0a6371;
+  --color-teal-tint: #e2f0f1;
+  --color-seal: #c23b2e;
+  --color-whatsapp: #1fa855;
+
+  /* shadcn semantic aliases */
+  --color-background: #ffffff;
+  --color-foreground: #0e2a47;
+  --color-primary: #0f7c8c;
+  --color-primary-foreground: #ffffff;
+  --color-muted: #f5f7fa;
+  --color-muted-foreground: #56687b;
+  --color-border: #d5dde6;
+  --color-input: #c9d3dd;
+  --color-ring: #0f7c8c;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+
+  --container-site: 76rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    font-feature-settings: "kern", "liga";
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply text-ink;
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--color-teal-tint);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+  /* anchor targets clear the sticky header */
+  [id] {
+    scroll-margin-top: 7rem;
+  }
+}
+
+/* Type scale (modular, ~1.25) */
+@utility text-display {
+  font-size: clamp(2.35rem, 4.6vw, 3.9rem);
+  line-height: 1.06;
+  letter-spacing: -0.028em;
+}
+@utility text-title {
+  font-size: clamp(1.85rem, 3.2vw, 2.65rem);
+  line-height: 1.12;
+  letter-spacing: -0.022em;
+}
+@utility text-subtitle {
+  font-size: clamp(1.3rem, 2vw, 1.6rem);
+  line-height: 1.25;
+}
+@utility text-lead {
+  font-size: clamp(1.08rem, 1.4vw, 1.22rem);
+  line-height: 1.6;
+}
+
+/* Faint measurement grid — used only behind the home hero */
+@utility bg-measure-grid {
+  background-image:
+    linear-gradient(to right, rgb(14 42 71 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(14 42 71 / 0.045) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
