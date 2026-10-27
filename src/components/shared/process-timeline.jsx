@@ -10,9 +10,18 @@ import { cn } from "@/lib/utils";
  * variant="vertical":   detailed steps; the rail fills as the reader scrolls.
  * steps: [{ title, text, detail? }]
  */
-export function ProcessTimeline({ steps, variant = "horizontal", invert = false }) {
-  return variant === "vertical" ? <VerticalTimeline steps={steps} /> : <HorizontalTimeline steps={steps} invert={invert} />;
+export function ProcessTimeline({ steps, variant = "horizontal", invert = false, locale = "en" }) {
+  return variant === "vertical" ? (
+    <VerticalTimeline steps={steps} locale={locale} />
+  ) : (
+    <HorizontalTimeline steps={steps} invert={invert} />
+  );
 }
+
+const stepLabel = {
+  en: (n, total) => `Step ${n} of ${total}`,
+  ja: (n, total) => `ステップ ${n} / ${total}`,
+};
 
 function StepNumber({ n, invert, className }) {
   return (
@@ -69,7 +78,7 @@ function HorizontalTimeline({ steps, invert }) {
   );
 }
 
-function VerticalTimeline({ steps }) {
+function VerticalTimeline({ steps, locale }) {
   const ref = useRef(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 70%", "end 60%"] });
@@ -83,7 +92,7 @@ function VerticalTimeline({ steps }) {
       <ol className="space-y-12 md:space-y-16">
         {steps.map((s, i) => (
           <li key={s.title} className="relative grid gap-4 md:grid-cols-[12rem_auto_1fr] md:gap-8">
-            <p className="hidden pt-2.5 text-right text-sm text-slate md:block">Step {i + 1} of {steps.length}</p>
+            <p className="hidden pt-2.5 text-right text-sm text-slate md:block">{stepLabel[locale](i + 1, steps.length)}</p>
             <div className="flex items-start gap-5 md:contents">
               <StepNumber n={i + 1} />
               <div className="md:pt-1.5">

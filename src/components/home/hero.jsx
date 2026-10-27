@@ -8,22 +8,47 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/shared/container";
 import { InspectionSeal } from "@/components/shared/inspection-seal";
 import { whatsappLink } from "@/data/site";
+import { localePath } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 const ease = [0.22, 1, 0.36, 1];
 
-const notes = [
-  { text: "Function-tested before export", className: "left-3 top-[9%] sm:-left-10" },
-  { text: "Sourced from hospitals in Japan", className: "right-3 top-[44%] sm:-right-8" },
-  { text: "Crated for sea and air freight", className: "bottom-[13%] right-3 sm:right-[8%]" },
-];
+const notePositions = ["left-3 top-[9%] sm:-left-10", "right-3 top-[44%] sm:-right-8", "bottom-[13%] right-3 sm:right-[8%]"];
+
+const copy = {
+  en: {
+    eyebrow: "Used imaging equipment, exported from Japan",
+    title: "Pre-owned MRI, CT and X-ray systems, inspected before they leave Japan.",
+    titleClass: "max-w-[16ch]",
+    text: "We source used imaging equipment from Japanese hospitals, document its condition, and ship it to clinics, hospitals and distributors worldwide.",
+    quote: "Request a quote",
+    browse: "Browse equipment",
+    brands: "Systems from Canon, Fujifilm, Shimadzu, Siemens, GE HealthCare, Philips and other manufacturers.",
+    imageAlt: "Closed-bore MRI system in a hospital scan room",
+    seal: "Inspected in Japan",
+    notes: ["Function-tested before export", "Sourced from hospitals in Japan", "Crated for sea and air freight"],
+  },
+  ja: {
+    eyebrow: "日本から輸出する中古画像診断機器",
+    title: "日本を出る前に検査した、中古のMRI・CT・X線装置。",
+    titleClass: "max-w-[13em]",
+    text: "日本国内の病院から中古の画像診断機器を調達し、状態を記録したうえで、世界各国のクリニック・病院・販売代理店へお届けします。",
+    quote: "お見積りを依頼",
+    browse: "機器一覧を見る",
+    brands: "キヤノン、富士フイルム、島津製作所、シーメンス、GEヘルスケア、フィリップスなど、各メーカーの機器を取り扱っています。",
+    imageAlt: "病院の検査室に設置された閉鎖型MRI装置",
+    seal: "日本で検品済み",
+    notes: ["輸出前に動作確認済み", "日本の病院から調達", "海上・航空輸送用に木箱梱包"],
+  },
+};
 
 /**
  * Home hero. One orchestrated load sequence:
  * image reveals → annotations appear in turn → inspection seal stamps.
  */
-export function Hero() {
+export function Hero({ locale = "en" }) {
   const reduce = useReducedMotion();
+  const c = copy[locale];
   const t = (delay) => (reduce ? { duration: 0 } : { duration: 0.6, delay, ease });
 
   return (
@@ -36,19 +61,16 @@ export function Hero() {
         <motion.div initial={reduce ? false : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={t(0)}>
           <p className="mb-6 inline-flex items-center gap-2.5 text-[0.95rem] text-slate">
             <span className="size-2 rounded-full bg-seal" aria-hidden />
-            Used imaging equipment, exported from Japan
+            {c.eyebrow}
           </p>
-          <h1 className="text-display max-w-[16ch]">Pre-owned MRI, CT and X-ray systems, inspected before they leave Japan.</h1>
-          <p className="mt-7 max-w-[52ch] text-lead text-slate">
-            We source used imaging equipment from Japanese hospitals, document its condition, and ship it to clinics,
-            hospitals and distributors worldwide.
-          </p>
+          <h1 className={cn("text-display", c.titleClass)}>{c.title}</h1>
+          <p className="mt-7 max-w-[52ch] text-lead text-slate">{c.text}</p>
           <div className="mt-9 flex flex-wrap gap-3">
             <Button asChild size="lg">
-              <Link href="/contact">Request a quote</Link>
+              <Link href={localePath(locale, "/contact")}>{c.quote}</Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link href="/equipment">Browse equipment</Link>
+              <Link href={localePath(locale, "/equipment")}>{c.browse}</Link>
             </Button>
             <Button asChild size="lg" variant="ghost" className="text-whatsapp hover:bg-whatsapp/10">
               <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
@@ -57,7 +79,7 @@ export function Hero() {
             </Button>
           </div>
           <p className="mt-12 max-w-[48ch] border-t border-line pt-5 text-sm leading-relaxed text-slate">
-            Systems from Canon, Fujifilm, Shimadzu, Siemens, GE HealthCare, Philips and other manufacturers.
+            {c.brands}
           </p>
         </motion.div>
 
@@ -70,7 +92,7 @@ export function Hero() {
           >
             <Image
               src="/images/equipment/mri-room.webp"
-              alt="Closed-bore MRI system in a hospital scan room"
+              alt={c.imageAlt}
               fill
               priority
               sizes="(min-width: 1024px) 40vw, 90vw"
@@ -78,12 +100,12 @@ export function Hero() {
             />
           </motion.div>
 
-          {notes.map((n, i) => (
+          {c.notes.map((note, i) => (
             <motion.p
-              key={n.text}
+              key={note}
               className={cn(
                 "absolute z-10 flex items-center gap-2.5 rounded-sm border border-line bg-white/95 px-3.5 py-2.5 text-sm text-ink shadow-[0_12px_30px_-14px_rgb(14_42_71/0.35)] backdrop-blur",
-                n.className
+                notePositions[i]
               )}
               initial={reduce ? false : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
@@ -93,7 +115,7 @@ export function Hero() {
                 <span className="absolute size-3 rounded-full bg-teal/25" />
                 <span className="size-1.5 rounded-full bg-teal" />
               </span>
-              {n.text}
+              {note}
             </motion.p>
           ))}
 
@@ -103,7 +125,7 @@ export function Hero() {
             animate={{ opacity: 0.94, scale: 1, rotate: -10 }}
             transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 18, delay: 1.85 }}
           >
-            <InspectionSeal className="size-full drop-shadow-[0_1px_0_rgba(255,255,255,0.6)]" />
+            <InspectionSeal label={c.seal} className="size-full drop-shadow-[0_1px_0_rgba(255,255,255,0.6)]" />
           </motion.div>
         </div>
       </Container>

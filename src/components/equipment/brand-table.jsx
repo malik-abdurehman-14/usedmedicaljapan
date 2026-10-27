@@ -1,12 +1,18 @@
+const headings = {
+  en: ["Manufacturer", "Typical model families"],
+  ja: ["メーカー", "主な機種シリーズ"],
+};
+
 /** Manufacturer / model-family table. */
-export function BrandTable({ brands }) {
+export function BrandTable({ brands, locale = "en" }) {
+  const [brandHeading, modelHeading] = headings[locale];
   return (
     <div className="overflow-x-auto rounded-lg border border-line">
       <table className="w-full border-collapse text-left text-[0.97rem]">
         <thead className="bg-paper text-sm text-slate">
           <tr>
-            <th scope="col" className="px-5 py-3 font-medium">Manufacturer</th>
-            <th scope="col" className="px-5 py-3 font-medium">Typical model families</th>
+            <th scope="col" className="px-5 py-3 font-medium">{brandHeading}</th>
+            <th scope="col" className="px-5 py-3 font-medium">{modelHeading}</th>
           </tr>
         </thead>
         <tbody>

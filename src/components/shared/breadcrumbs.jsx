@@ -2,11 +2,14 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { JsonLd } from "./json-ld";
 import { site } from "@/data/site";
+import { localePath } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
+const homeLabel = { en: "Home", ja: "ホーム" };
+
 /** items: [{ label, href? }] — last item is the current page. Emits BreadcrumbList schema. */
-export function Breadcrumbs({ items, className, invert = false }) {
-  const all = [{ label: "Home", href: "/" }, ...items];
+export function Breadcrumbs({ items, locale = "en", className, invert = false }) {
+  const all = [{ label: homeLabel[locale], href: localePath(locale, "/") }, ...items];
   const schema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

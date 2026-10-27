@@ -2,6 +2,8 @@
 // All copy is placeholder until the client supplies final content.
 // `modality` uses the DICOM modality code radiology buyers already know.
 
+import { commonProductFaqsJa, equipmentJa } from "./equipment.ja";
+
 const img = (file) => `/images/equipment/${file}`;
 
 export const equipment = [
@@ -418,9 +420,16 @@ export const commonProductFaqs = [
   },
 ];
 
-export const getEquipment = (slug) => equipment.find((e) => e.slug === slug);
+/** The catalogue in one language. Japanese entries are the English ones with equipment.ja.js merged over them. */
+export const getEquipmentList = (locale = "en") =>
+  locale === "ja" ? equipment.map((e) => ({ ...e, ...equipmentJa[e.slug] })) : equipment;
 
-export const getRelated = (slug, count = 3) => {
-  const i = equipment.findIndex((e) => e.slug === slug);
-  return Array.from({ length: count }, (_, k) => equipment[(i + k + 1) % equipment.length]);
+export const getCommonProductFaqs = (locale = "en") => (locale === "ja" ? commonProductFaqsJa : commonProductFaqs);
+
+export const getEquipment = (slug, locale = "en") => getEquipmentList(locale).find((e) => e.slug === slug);
+
+export const getRelated = (slug, locale = "en", count = 3) => {
+  const list = getEquipmentList(locale);
+  const i = list.findIndex((e) => e.slug === slug);
+  return Array.from({ length: count }, (_, k) => list[(i + k + 1) % list.length]);
 };

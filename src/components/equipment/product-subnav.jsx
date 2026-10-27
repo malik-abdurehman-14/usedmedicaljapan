@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 /** Sticky in-page navigation for long product pages, with scroll-spy. */
-export function ProductSubnav({ sections }) {
+export function ProductSubnav({ sections, label = "On this page" }) {
   const [active, setActive] = useState(sections[0]?.id);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export function ProductSubnav({ sections }) {
   }, [sections]);
 
   return (
-    <nav aria-label="On this page" className="sticky top-[76px] z-20 border-y border-line bg-white/95 backdrop-blur">
+    <nav aria-label={label} className="sticky top-[76px] z-20 border-y border-line bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-site gap-1 overflow-x-auto px-5 sm:px-8 [scrollbar-width:none]">
         {sections.map((s) => (
           <a

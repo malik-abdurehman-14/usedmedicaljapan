@@ -1,4 +1,6 @@
-// Shared page content. Placeholder copy — client to review.
+// Shared page content (English). Japanese versions live in content.ja.js.
+
+import * as ja from "./content.ja";
 
 export const processSteps = [
   {
@@ -124,55 +126,6 @@ export const companyProfile = [
   { label: "Contact", value: "info@usedmedicaljapan.com" },
 ];
 
-// ---------- Japanese page ----------
-export const ja = {
-  about: {
-    title: "設備を更新する病院と、成長を目指す病院をつなぐ架け橋",
-    mission: [
-      "Used Medical Japanは、医療機器の更新を進める日本の医療機関と、高品質な中古医療機器を適正な価格で導入したい世界各国の病院・医療機関をつなぐことを目的としています。",
-      "医療機器の活用期間を延ばし、より多くの医療機関が医療技術を利用できる環境を整えるとともに、国境を越えた医療機器の再利用を通じて、持続可能な医療の実現に貢献することを目指しています。",
-    ],
-    storyTitle: "良質な医療機器に、もう一度活躍の場を。",
-    story: [
-      "日本の病院では、定期的な医療機器の更新が行われています。その中には、まだ十分に活用できる可能性を持ち、ほかの医療機関で引き続き役立てることができる中古医療機器もあります。一方、世界各国の病院やクリニックでは、新品よりも導入コストを抑えながら、必要な医療機器を確保したいというニーズがあります。",
-      "Used Medical Japanは、こうした双方のニーズをつなぎます。海外のお客様が日本の中古医療機器を導入できるよう、ご要望に応じて機器の選定や状態に関する情報の確認をサポートし、輸送や輸出に関する手配を調整します。",
-      "私たちの想いはシンプルです。良質な医療機器が、必要とされる場所で、より多くの患者さんのために役立ち続けること。",
-      "その実現に向けて、日本と世界の医療機関をつなぎ、医療機器の新たな活用の可能性を広げていきます。",
-    ],
-  },
-  heroTitle: "使用済み医療機器を、適正価格で買い取ります。",
-  heroText:
-    "MRI・CT・X線装置などの更新や廃棄をご検討中の病院・クリニック様へ。査定から撤去・搬出まで一貫して対応し、機器を海外の医療機関で再活用します。",
-  points: [
-    { title: "無料査定", text: "機種・年式・使用状況をお知らせいただければ、無料でお見積りいたします。" },
-    { title: "撤去・搬出まで対応", text: "専門技術者が解体・梱包・搬出まで行い、院内のご負担を最小限にします。" },
-    { title: "海外で再活用", text: "買い取った機器は検査後、医療機器を必要とする海外の医療機関へ届けられます。" },
-  ],
-  equipment: [
-    "MRI装置",
-    "CT装置",
-    "PET-CT装置",
-    "SPECT・ガンマカメラ",
-    "血管撮影装置",
-    "外科用Cアーム",
-    "X線撮影装置・DR",
-    "マンモグラフィ",
-    "超音波診断装置",
-  ],
-  process: [
-    { title: "お問い合わせ", text: "メールまたはお電話で、機種名・年式・設置場所をお知らせください。" },
-    { title: "査定・お見積り", text: "写真や資料をもとに査定し、買取価格をご提示します。" },
-    { title: "ご契約", text: "条件にご納得いただけましたら、ご契約となります。" },
-    { title: "撤去・搬出", text: "日程を調整のうえ、専門技術者が撤去・搬出を行います。" },
-    { title: "お支払い", text: "搬出完了後、指定口座へお支払いいたします。" },
-  ],
-  company: [
-    { label: "会社名", value: "株式会社SK Global" },
-    { label: "設立", value: "2015年9月16日" },
-    { label: "住所", value: "〒108-0023 東京都港区芝浦4-12-38 2F" },
-    { label: "電話", value: "+81 03-6435-4449" },
-    { label: "事業内容", value: "中古医療機器の買取・検査・輸出" },
-    { label: "対応言語", value: "日本語・英語" },
-    { label: "連絡先", value: "info@usedmedicaljapan.com" },
-  ],
-};
+const en = { processSteps, services, whyJapan, generalFaqs, companyProfile };
+
+export const getContent = (locale = "en") => (locale === "ja" ? ja : en);

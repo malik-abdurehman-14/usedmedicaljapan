@@ -16,6 +16,15 @@ export const site = {
   languages: "English, Japanese",
 };
 
+// Japanese overrides for locale-specific fields
+const siteJa = {
+  address: "〒108-0023 東京都港区芝浦4-12-38 2F",
+  hours: "平日 9:00〜18:00（日本時間）",
+  languages: "日本語・英語",
+};
+
+export const getSite = (locale = "en") => (locale === "ja" ? { ...site, ...siteJa } : site);
+
 export const whatsappLink = (text = "") =>
   `https://wa.me/${site.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
 
@@ -28,9 +37,10 @@ export const mainNav = [
 ];
 
 export const jaNav = [
-  { label: "買取対象機器", href: "/ja#equipment" },
-  { label: "買取の流れ", href: "/ja#process" },
-  { label: "私たちについて", href: "/ja#about" },
-  { label: "会社概要", href: "/ja#company" },
-  { label: "お問い合わせ", href: "/ja#contact" },
+  { label: "取扱機器", href: "/ja/equipment", hasMenu: true },
+  { label: "サービス", href: "/ja/services" },
+  { label: "ご購入の流れ", href: "/ja/how-it-works" },
+  { label: "私たちについて", href: "/ja/about" },
+  { label: "お問い合わせ", href: "/ja/contact" },
+  { label: "医療機器買取", href: "/ja/kaitori" },
 ];

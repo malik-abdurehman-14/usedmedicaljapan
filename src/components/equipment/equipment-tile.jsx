@@ -1,14 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { localePath } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /** Image-led equipment tile. `size="large"` is used for flagship modalities. */
-export function EquipmentTile({ item, size = "default", className, priority = false }) {
+export function EquipmentTile({ item, locale = "en", size = "default", className, priority = false }) {
   const large = size === "large";
   return (
     <Link
-      href={`/equipment/${item.slug}`}
+      href={localePath(locale, `/equipment/${item.slug}`)}
       className={cn(
         "group relative isolate flex flex-col justify-end overflow-hidden rounded-lg bg-ink",
         large ? "min-h-[22rem] md:min-h-[26rem]" : "min-h-[17rem]",

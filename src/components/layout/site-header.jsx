@@ -9,9 +9,38 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Container } from "@/components/shared/container";
 import { Logo } from "@/components/shared/logo";
-import { equipment } from "@/data/equipment";
+import { getEquipmentList } from "@/data/equipment";
 import { jaNav, mainNav, whatsappLink } from "@/data/site";
+import { localePath, switchLocalePath } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+
+const copy = {
+  en: {
+    switchLabel: "日本語",
+    switchLang: "ja",
+    quote: "Request a quote",
+    menu: "Menu",
+    openMenu: "Open menu",
+    menuTitle: "Not sure which system fits?",
+    menuText: "Share your clinical needs and budget. We will suggest suitable units available in Japan.",
+    viewAll: "View all equipment",
+  },
+  ja: {
+    switchLabel: "English",
+    switchLang: "en",
+    quote: "お見積り依頼",
+    menu: "メニュー",
+    openMenu: "メニューを開く",
+    menuTitle: "どの機器が適しているかお悩みですか？",
+    menuText: "臨床ニーズとご予算をお知らせください。日本国内で入手可能な機器をご提案します。",
+    viewAll: "すべての機器を見る",
+  },
+};
+
+// Japanese labels run wider, so the Japanese desktop nav starts at xl instead of lg
+const desktop = { en: "lg:flex", ja: "xl:flex" };
+const mobileOnly = { en: "lg:hidden", ja: "xl:hidden" };
+const desktopBlock = { en: "lg:block", ja: "xl:block" };
 
 export function SiteHeader({ locale = "en" }) {
   const pathname = usePathname();
@@ -20,6 +49,10 @@ export function SiteHeader({ locale = "en" }) {
   const closeTimer = useRef(null);
   const isJa = locale === "ja";
   const nav = isJa ? jaNav : mainNav;
+  const t = copy[locale];
+  const equipment = getEquipmentList(locale);
+  const home = localePath(locale, "/");
+  const equipmentHref = localePath(locale, "/equipment");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -45,7 +78,7 @@ export function SiteHeader({ locale = "en" }) {
     closeTimer.current = setTimeout(() => setMenuOpen(false), 140);
   };
 
-  const isActive = (href) => (href === "/" ? pathname === "/" : pathname.startsWith(href.split("#")[0]) && !href.includes("#"));
+  const isActive = (href) => (href === home ? pathname === home : pathname.startsWith(href));
 
   return (
     <header
@@ -55,9 +88,9 @@ export function SiteHeader({ locale = "en" }) {
       )}
     >
       <Container className="flex h-[76px] items-center justify-between gap-6">
-        <Logo href={isJa ? "/ja" : "/"} />
+        <Logo href={home} locale={locale} className="shrink-0 whitespace-nowrap" />
 
-        <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
+        <nav aria-label="Main" className={cn("hidden items-center gap-1", desktop[locale])}>
           {nav.map((item) =>
             item.hasMenu ? (
               <div key={item.href} onPointerEnter={openMenu} onPointerLeave={scheduleClose}>
@@ -67,7 +100,7 @@ export function SiteHeader({ locale = "en" }) {
                   aria-controls="equipment-menu"
                   onClick={() => setMenuOpen((v) => !v)}
                   className={cn(
-                    "inline-flex h-10 items-center gap-1 rounded-sm px-3 text-[0.95rem] transition-colors hover:text-teal",
+                    "inline-flex h-10 items-center gap-1 whitespace-nowrap rounded-sm px-3 text-[0.95rem] transition-colors hover:text-teal",
                     isActive(item.href) || menuOpen ? "text-teal" : "text-ink"
                   )}
                 >
@@ -80,7 +113,7 @@ export function SiteHeader({ locale = "en" }) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "inline-flex h-10 items-center rounded-sm px-3 text-[0.95rem] transition-colors hover:text-teal",
+                  "inline-flex h-10 items-center whitespace-nowrap rounded-sm px-3 text-[0.95rem] transition-colors hover:text-teal",
                   isActive(item.href) ? "text-teal" : "text-ink"
                 )}
               >
@@ -90,26 +123,26 @@ export function SiteHeader({ locale = "en" }) {
           )}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className={cn("hidden items-center gap-2", desktop[locale])}>
           <Link
-            href={isJa ? "/" : "/ja"}
-            hrefLang={isJa ? "en" : "ja"}
-            className="inline-flex h-10 items-center gap-1.5 rounded-sm px-3 text-sm text-slate transition-colors hover:text-ink"
+            href={switchLocalePath(pathname)}
+            hrefLang={t.switchLang}
+            className="inline-flex h-10 items-center gap-1.5 whitespace-nowrap rounded-sm px-3 text-sm text-slate transition-colors hover:text-ink"
           >
             <Languages className="size-4" aria-hidden />
-            {isJa ? "English" : "日本語"}
+            {t.switchLabel}
           </Link>
           <Button asChild>
-            <Link href={isJa ? "/ja#contact" : "/contact"}>{isJa ? "無料査定を依頼" : "Request a quote"}</Link>
+            <Link href={localePath(locale, "/contact")}>{t.quote}</Link>
           </Button>
         </div>
 
-        <MobileMenu nav={nav} isJa={isJa} />
+        <MobileMenu nav={nav} locale={locale} equipment={equipment} switchHref={switchLocalePath(pathname)} />
       </Container>
 
       {/* Equipment mega menu */}
       <AnimatePresence>
-        {menuOpen && !isJa && (
+        {menuOpen && (
           <motion.div
             id="equipment-menu"
             initial={{ opacity: 0, y: -6 }}
@@ -118,14 +151,17 @@ export function SiteHeader({ locale = "en" }) {
             transition={{ duration: 0.18, ease: "easeOut" }}
             onPointerEnter={openMenu}
             onPointerLeave={scheduleClose}
-            className="absolute inset-x-0 top-full hidden border-b border-line bg-white shadow-[0_24px_40px_-24px_rgb(14_42_71/0.25)] lg:block"
+            className={cn(
+              "absolute inset-x-0 top-full hidden border-b border-line bg-white shadow-[0_24px_40px_-24px_rgb(14_42_71/0.25)]",
+              desktopBlock[locale]
+            )}
           >
             <Container className="grid grid-cols-[1fr_17rem] gap-10 py-8">
               <ul className="grid grid-cols-3 gap-x-6 gap-y-1">
                 {equipment.map((e) => (
                   <li key={e.slug}>
                     <Link
-                      href={`/equipment/${e.slug}`}
+                      href={localePath(locale, `/equipment/${e.slug}`)}
                       className="group flex items-start gap-3 rounded-md p-3 transition-colors hover:bg-paper"
                     >
                       <span className="grid size-9 shrink-0 place-items-center rounded-sm border border-line text-xs font-semibold text-ink transition-colors group-hover:border-teal group-hover:bg-teal group-hover:text-white">
@@ -141,17 +177,15 @@ export function SiteHeader({ locale = "en" }) {
               </ul>
               <div className="flex flex-col justify-between rounded-md bg-paper p-6">
                 <div>
-                  <p className="font-medium text-ink">Not sure which system fits?</p>
-                  <p className="mt-2 text-sm text-slate">
-                    Share your clinical needs and budget. We will suggest suitable units available in Japan.
-                  </p>
+                  <p className="font-medium text-ink">{t.menuTitle}</p>
+                  <p className="mt-2 text-sm text-slate">{t.menuText}</p>
                 </div>
                 <div className="mt-6 flex flex-col gap-2">
                   <Button asChild size="sm">
-                    <Link href="/contact">Request a quote</Link>
+                    <Link href={localePath(locale, "/contact")}>{t.quote}</Link>
                   </Button>
                   <Button asChild size="sm" variant="ghost" className="justify-start">
-                    <Link href="/equipment">View all equipment</Link>
+                    <Link href={equipmentHref}>{t.viewAll}</Link>
                   </Button>
                 </div>
               </div>
@@ -163,15 +197,16 @@ export function SiteHeader({ locale = "en" }) {
   );
 }
 
-function MobileMenu({ nav, isJa }) {
+function MobileMenu({ nav, locale, equipment, switchHref }) {
+  const t = copy[locale];
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open menu">
+        <Button variant="ghost" size="icon" className={mobileOnly[locale]} aria-label={t.openMenu}>
           <Menu className="size-6" />
         </Button>
       </SheetTrigger>
-      <SheetContent title={isJa ? "メニュー" : "Menu"}>
+      <SheetContent title={t.menu}>
         <div className="flex h-full flex-col overflow-y-auto px-6 pb-8 pt-16">
           <nav aria-label="Mobile" className="flex flex-col">
             {nav.map((item) => (
@@ -186,7 +221,7 @@ function MobileMenu({ nav, isJa }) {
                     {equipment.map((e) => (
                       <li key={e.slug}>
                         <SheetClose asChild>
-                          <Link href={`/equipment/${e.slug}`} className="flex items-center gap-3 py-1.5 text-[0.95rem] text-slate">
+                          <Link href={localePath(locale, `/equipment/${e.slug}`)} className="flex items-center gap-3 py-1.5 text-[0.95rem] text-slate">
                             <span className="w-7 text-xs font-semibold text-teal">{e.modality}</span>
                             {e.name}
                           </Link>
@@ -198,24 +233,22 @@ function MobileMenu({ nav, isJa }) {
               </div>
             ))}
             <SheetClose asChild>
-              <Link href={isJa ? "/" : "/ja"} className="flex items-center gap-2 py-4 text-slate">
-                <Languages className="size-4" /> {isJa ? "English" : "日本語"}
+              <Link href={switchHref} hrefLang={t.switchLang} className="flex items-center gap-2 py-4 text-slate">
+                <Languages className="size-4" /> {t.switchLabel}
               </Link>
             </SheetClose>
           </nav>
           <div className="mt-auto flex flex-col gap-3 pt-8">
             <SheetClose asChild>
               <Button asChild size="lg">
-                <Link href={isJa ? "/ja#contact" : "/contact"}>{isJa ? "無料査定を依頼" : "Request a quote"}</Link>
+                <Link href={localePath(locale, "/contact")}>{t.quote}</Link>
               </Button>
             </SheetClose>
-            {!isJa && (
-              <Button asChild size="lg" variant="whatsapp">
-                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
-                  <MessageCircle /> WhatsApp
-                </a>
-              </Button>
-            )}
+            <Button asChild size="lg" variant="whatsapp">
+              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
+                <MessageCircle /> WhatsApp
+              </a>
+            </Button>
           </div>
         </div>
       </SheetContent>
