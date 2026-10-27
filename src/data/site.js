@@ -10,7 +10,7 @@ export const site = {
   email: "info@usedmedicaljapan.com", // [confirm mailbox]
   phone: "+81 03-6435-4449",
   phoneHref: "tel:+81364354449",
-  whatsapp: "810000000000", // [WhatsApp number, digits only, with country code]
+  whatsapp: "819061170042", // digits only, with country code (+81 90-6117-0042)
   address: "2F, 4-12-38 Shibaura, Minato-ku, Tokyo 108-0023",
   hours: "Mon to Fri, 9:00 to 18:00 JST",
   languages: "English, Japanese",
