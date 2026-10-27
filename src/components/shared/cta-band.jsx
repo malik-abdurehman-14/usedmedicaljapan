@@ -5,8 +5,8 @@ import { Container } from "./container";
 import { whatsappLink } from "@/data/site";
 
 export function CtaBand({
-  title = "Looking for a specific machine?",
-  text = "Tell us the equipment, budget and destination country. We will come back with available units from Japan.",
+  title = "Looking for Specific Medical Equipment?",
+  text = "Share your equipment requirements, budget, and destination country. We’ll help source suitable options from Japan.",
 }) {
   return (
     <section className="bg-ink text-white">

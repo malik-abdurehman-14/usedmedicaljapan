@@ -64,7 +64,7 @@ export function SiteFooter() {
               </a>
             </li>
             <li>
-              <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="flex items-start gap-2.5 transition-colors hover:text-white">
+              <a href={site.phoneHref} className="flex items-start gap-2.5 transition-colors hover:text-white">
                 <Phone className="mt-1 size-4 shrink-0 text-teal" /> {site.phone}
               </a>
             </li>

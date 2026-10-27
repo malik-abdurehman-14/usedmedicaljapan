@@ -13,7 +13,7 @@ export const metadata = {
 const channels = [
   { icon: MessageCircle, label: "WhatsApp", value: "Fastest for quick questions", href: whatsappLink(), external: true },
   { icon: Mail, label: "Email", value: site.email, href: `mailto:${site.email}` },
-  { icon: Phone, label: "Phone", value: site.phone, href: `tel:${site.phone.replace(/\s/g, "")}` },
+  { icon: Phone, label: "Phone", value: site.phone, href: site.phoneHref },
 ];
 
 export default function ContactPage() {

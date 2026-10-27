@@ -8,9 +8,10 @@ export const site = {
   description:
     "Pre-owned MRI, CT, PET-CT, X-ray, C-arm, mammography and ultrasound systems sourced from hospitals in Japan, inspected and exported worldwide.",
   email: "info@usedmedicaljapan.com", // [confirm mailbox]
-  phone: "+81 00-0000-0000", // [client phone]
+  phone: "+81 03-6435-4449",
+  phoneHref: "tel:+81364354449",
   whatsapp: "810000000000", // [WhatsApp number, digits only, with country code]
-  address: "[Company address], Japan",
+  address: "2F, 4-12-38 Shibaura, Minato-ku, Tokyo 108-0023",
   hours: "Mon to Fri, 9:00 to 18:00 JST",
   languages: "English, Japanese",
 };
@@ -29,6 +30,7 @@ export const mainNav = [
 export const jaNav = [
   { label: "買取対象機器", href: "/ja#equipment" },
   { label: "買取の流れ", href: "/ja#process" },
+  { label: "私たちについて", href: "/ja#about" },
   { label: "会社概要", href: "/ja#company" },
   { label: "お問い合わせ", href: "/ja#contact" },
 ];

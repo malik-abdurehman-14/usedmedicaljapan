@@ -41,7 +41,7 @@ export default function JapanesePage() {
                 </a>
               </Button>
               <Button asChild size="lg" variant="outline">
-                <a href={`tel:${site.phone.replace(/\s/g, "")}`}>
+                <a href={site.phoneHref}>
                   <Phone /> 電話で相談する
                 </a>
               </Button>
@@ -85,6 +85,33 @@ export default function JapanesePage() {
         <ProcessTimeline steps={ja.process} />
       </Section>
 
+      <Section tone="paper" id="about">
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
+          <SectionHeading kicker="私たちについて" title={ja.about.title} />
+          <div className="max-w-[38em] space-y-5">
+            <h3 className="text-[1.2rem] tracking-normal">私たちの使命</h3>
+            {ja.about.mission.map((t) => (
+              <p key={t} className="leading-[1.9] text-ink/85">
+                {t}
+              </p>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      <Section id="story">
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
+          <SectionHeading kicker="私たちのストーリー" title={ja.about.storyTitle} />
+          <div className="max-w-[38em] space-y-5">
+            {ja.about.story.map((t) => (
+              <p key={t} className="leading-[1.9] text-ink/85">
+                {t}
+              </p>
+            ))}
+          </div>
+        </div>
+      </Section>
+
       <Section tone="paper" id="company">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
           <SectionHeading title="会社概要" />
@@ -114,7 +141,7 @@ export default function JapanesePage() {
               </a>
             </Button>
             <Button asChild size="lg" variant="outline-inverse">
-              <a href={`tel:${site.phone.replace(/\s/g, "")}`}>
+              <a href={site.phoneHref}>
                 <Phone /> {site.phone}
               </a>
             </Button>

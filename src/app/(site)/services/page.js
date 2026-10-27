@@ -27,8 +27,8 @@ export default function ServicesPage() {
     <>
       <PageHero
         breadcrumbs={[{ label: "Services" }]}
-        title="Everything between a hospital in Japan and yours"
-        description="We handle sourcing, inspection, removal, packing, paperwork and freight, so you deal with one supplier from the first enquiry to delivery."
+        title="From Japanese Hospitals to Healthcare Providers Worldwide"
+        description="We help you source pre-owned medical equipment from Japan and coordinate the process—from equipment selection and condition information to packing, export documentation, and shipping arrangements. Our goal is to make purchasing from Japan straightforward, transparent, and reliable."
       >
         <Button asChild size="lg">
           <Link href="/contact">Request a quote</Link>
@@ -55,7 +55,10 @@ export default function ServicesPage() {
 
       <Section tone="paper">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
-          <SectionHeading title="Who we work with" description="Buyers who need dependable equipment without the price of new." />
+          <SectionHeading
+            title="Who We Work With"
+            description="Hospitals, clinics, and medical equipment importers seeking reliable pre-owned equipment at competitive prices."
+          />
           <dl className="divide-y divide-line border-y border-line">
             {buyers.map((b) => (
               <div key={b.title} className="grid gap-2 py-7 sm:grid-cols-[13rem_1fr] sm:gap-8">

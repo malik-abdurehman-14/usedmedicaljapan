@@ -24,9 +24,20 @@ export default function AboutPage() {
     <>
       <PageHero
         breadcrumbs={[{ label: "About" }]}
-        title="A Japan-based bridge between hospitals that upgrade and hospitals that grow"
-        description="[Client to provide: two or three sentences on who founded the company, when, and why.]"
+        title="A bridge between hospitals that upgrade and hospitals that grow"
       />
+
+      <Section tone="paper">
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
+          <SectionHeading title="Our mission" />
+          <p className="max-w-[60ch] text-lead text-ink/85">
+            Used Medical Japan was established to connect healthcare providers in Japan upgrading their medical equipment
+            with hospitals and medical institutions worldwide seeking affordable, quality pre-owned equipment. Our mission
+            is to extend the life of medical equipment, make healthcare technology more accessible, and promote sustainable
+            reuse across borders.
+          </p>
+        </div>
+      </Section>
 
       <Section>
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
@@ -34,17 +45,21 @@ export default function AboutPage() {
             <Image src="/images/equipment/ct-room.webp" alt="CT scanner in a hospital room" fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
           </div>
           <div className="max-w-[60ch] space-y-5 text-ink/85">
-            <h2 className="text-title">Our story</h2>
+            <SectionHeading kicker="Our story" title="Good equipment deserves a second hospital" />
             <p>
-              Hospitals in Japan replace imaging equipment on regular cycles, often while systems still have years of
-              useful life. At the same time, hospitals and clinics in many countries need that equipment but cannot
-              justify the price of new.
+              Hospitals in Japan regularly upgrade their medical equipment, creating opportunities for reliable pre-owned
+              systems to continue serving patients elsewhere. Meanwhile, hospitals and clinics around the world need access
+              to medical technology at more affordable prices.
             </p>
             <p>
-              We connect the two. We source systems in Japan, check them carefully, and handle everything needed to get
-              them to the buyer, from removal and crating to export paperwork.
+              Used Medical Japan connects these needs. We help international buyers source pre-owned medical equipment from
+              Japan and coordinate the process, from equipment selection and condition information to shipping and export
+              arrangements, according to each customer&apos;s requirements.
             </p>
-            <p className="text-slate">[Client to replace with the company's own story.]</p>
+            <p>
+              Our belief is simple: quality medical equipment should have the opportunity to make a difference for more
+              patients, wherever it is needed.
+            </p>
           </div>
         </div>
       </Section>

@@ -2,40 +2,40 @@
 
 export const processSteps = [
   {
-    title: "Send your requirement",
-    text: "Tell us the equipment, preferred brands, budget and destination country.",
+    title: "Tell Us Your Requirements",
+    text: "Let us know which equipment you need, your preferred brands or models, your budget, and your destination country.",
     detail:
-      "A short message is enough to start. If you have a site plan, clinical priorities or a target delivery date, include them so we can shortlist the right units.",
+      "A brief inquiry is all it takes to get started. If you have specific technical requirements or a preferred delivery schedule, please share them with us.",
   },
   {
-    title: "We source in Japan",
-    text: "We match your request with units coming out of Japanese hospitals and clinics.",
+    title: "We Source Equipment in Japan",
+    text: "We search for suitable pre-owned medical equipment through our network of hospitals, medical equipment dealers, and other suppliers in Japan.",
     detail:
-      "We work with hospitals, dealers and de-installation partners across Japan. You receive a shortlist with model, year and a first condition summary.",
+      "Based on your requirements, we provide available options with relevant details such as the manufacturer, model, year of manufacture, and available condition information.",
   },
   {
-    title: "Inspection and report",
-    text: "Each unit is function-tested, photographed and documented.",
+    title: "Review Equipment Details",
+    text: "We help you review the available information about the equipment before making a purchasing decision.",
     detail:
-      "You receive an inspection report with photos and video of the specific unit, plus usage data such as tube counts or helium level where the system records it.",
+      "Depending on the unit and supplier, photographs, videos, service records, usage data, or inspection reports may be available. Any additional inspection or testing requirements will be confirmed before purchase.",
   },
   {
-    title: "Quotation and agreement",
-    text: "A clear quote on FOB or CIF terms, followed by a proforma invoice.",
+    title: "Quotation and Agreement",
+    text: "Once a suitable unit has been identified, we provide a detailed quotation and proforma invoice.",
     detail:
-      "The quotation lists exactly what is included, from coils and probes to manuals, and states the shipping terms and estimated timeline.",
+      "The quotation outlines the equipment specifications, included accessories, available condition information, payment terms, and estimated timeline. Full payment by T/T bank transfer is required in advance before shipment. Shipping and export arrangements are agreed upon with the buyer before the order is finalized.",
   },
   {
-    title: "De-installation and crating",
-    text: "Engineers remove the system and pack it in export crates.",
+    title: "Equipment Preparation and Packing",
+    text: "After payment and confirmation of the order, we coordinate the necessary preparation for shipment with the relevant supplier or service provider.",
     detail:
-      "Sensitive components are secured and moisture-protected. Crate dimensions and weights are shared in advance for your logistics planning.",
+      "Depending on the equipment and agreed arrangements, this may include de-installation, packing, and export crating. Packing details and estimated crate dimensions and weights can be provided when available.",
   },
   {
-    title: "Shipping and delivery",
-    text: "Export documents, freight and tracking until arrival at your port.",
+    title: "Shipping and Export Documentation",
+    text: "We coordinate shipping and the preparation of applicable export documents according to the agreed arrangements.",
     detail:
-      "We prepare the commercial invoice, packing list and export paperwork. Installation support by experienced engineers can be arranged on request.",
+      "Documents may include a commercial invoice, packing list, and other required export paperwork. Shipping schedules and estimated arrival dates are confirmed as far as possible. Installation or technical support may also be arranged separately, subject to availability.",
   },
 ];
 
@@ -67,8 +67,8 @@ export const services = [
   },
   {
     icon: "ship",
-    title: "Shipping and installation support",
-    text: "Sea and air freight on FOB or CIF terms, with installation support arranged on request.",
+    title: "Shipping and Installation Support",
+    text: "Sea or air freight, export coordination, and installation support arranged to meet your requirements.",
   },
 ];
 
@@ -115,9 +115,10 @@ export const generalFaqs = [
 ];
 
 export const companyProfile = [
-  { label: "Company name", value: "[Registered company name]" },
-  { label: "Established", value: "[Year]" },
-  { label: "Location", value: "[City], Japan" },
+  { label: "Company Name", value: "SK Global Co., Ltd." },
+  { label: "Date of Establishment", value: "9/16/2015" },
+  { label: "Address", value: "2F, 4-12-38 Shibaura, Minato-ku, Tokyo 108-0023" },
+  { label: "Phone", value: "+81 03-6435-4449" },
   { label: "Business", value: "Sourcing, inspection and export of used medical imaging equipment" },
   { label: "Languages", value: "English, Japanese" },
   { label: "Contact", value: "info@usedmedicaljapan.com" },
@@ -125,6 +126,20 @@ export const companyProfile = [
 
 // ---------- Japanese page ----------
 export const ja = {
+  about: {
+    title: "設備を更新する病院と、成長を目指す病院をつなぐ架け橋",
+    mission: [
+      "Used Medical Japanは、医療機器の更新を進める日本の医療機関と、高品質な中古医療機器を適正な価格で導入したい世界各国の病院・医療機関をつなぐことを目的としています。",
+      "医療機器の活用期間を延ばし、より多くの医療機関が医療技術を利用できる環境を整えるとともに、国境を越えた医療機器の再利用を通じて、持続可能な医療の実現に貢献することを目指しています。",
+    ],
+    storyTitle: "良質な医療機器に、もう一度活躍の場を。",
+    story: [
+      "日本の病院では、定期的な医療機器の更新が行われています。その中には、まだ十分に活用できる可能性を持ち、ほかの医療機関で引き続き役立てることができる中古医療機器もあります。一方、世界各国の病院やクリニックでは、新品よりも導入コストを抑えながら、必要な医療機器を確保したいというニーズがあります。",
+      "Used Medical Japanは、こうした双方のニーズをつなぎます。海外のお客様が日本の中古医療機器を導入できるよう、ご要望に応じて機器の選定や状態に関する情報の確認をサポートし、輸送や輸出に関する手配を調整します。",
+      "私たちの想いはシンプルです。良質な医療機器が、必要とされる場所で、より多くの患者さんのために役立ち続けること。",
+      "その実現に向けて、日本と世界の医療機関をつなぎ、医療機器の新たな活用の可能性を広げていきます。",
+    ],
+  },
   heroTitle: "使用済み医療機器を、適正価格で買い取ります。",
   heroText:
     "MRI・CT・X線装置などの更新や廃棄をご検討中の病院・クリニック様へ。査定から撤去・搬出まで一貫して対応し、機器を海外の医療機関で再活用します。",
@@ -152,9 +167,10 @@ export const ja = {
     { title: "お支払い", text: "搬出完了後、指定口座へお支払いいたします。" },
   ],
   company: [
-    { label: "会社名", value: "[会社名]" },
-    { label: "設立", value: "[設立年]" },
-    { label: "所在地", value: "[所在地]" },
+    { label: "会社名", value: "株式会社SK Global" },
+    { label: "設立", value: "2015年9月16日" },
+    { label: "住所", value: "〒108-0023 東京都港区芝浦4-12-38 2F" },
+    { label: "電話", value: "+81 03-6435-4449" },
     { label: "事業内容", value: "中古医療機器の買取・検査・輸出" },
     { label: "対応言語", value: "日本語・英語" },
     { label: "連絡先", value: "info@usedmedicaljapan.com" },
