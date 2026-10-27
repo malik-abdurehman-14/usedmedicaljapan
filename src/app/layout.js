@@ -38,7 +38,7 @@ const organization = {
   name: site.name,
   url: site.url,
   email: site.email,
-  logo: `${site.url}/icon.svg`,
+  logo: `${site.url}/images/logo.png`,
   address: { "@type": "PostalAddress", addressCountry: "JP" },
   areaServed: "Worldwide",
 };
