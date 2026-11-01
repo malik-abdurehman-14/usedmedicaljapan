@@ -29,6 +29,7 @@ export const whatsappLink = (text = "") =>
   `https://wa.me/${site.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
 
 export const mainNav = [
+  { label: "Home", href: "/" },
   { label: "Equipment", href: "/equipment", hasMenu: true },
   { label: "Services", href: "/services" },
   { label: "How it works", href: "/how-it-works" },
@@ -38,6 +39,7 @@ export const mainNav = [
 
 // Japanese is a single landing page, so its nav jumps to sections
 export const jaNav = [
+  { label: "ホーム", href: "/ja" },
   { label: "取扱機器", href: "/ja#equipment" },
   { label: "私たちについて", href: "/ja#about" },
   { label: "ご購入の流れ", href: "/ja#process" },

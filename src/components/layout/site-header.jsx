@@ -55,10 +55,10 @@ function LanguageSwitch({ href, locale, className }) {
   );
 }
 
-// Japanese labels run wider, so the Japanese desktop nav starts at xl instead of lg
-const desktop = { en: "lg:flex", ja: "xl:flex" };
-const mobileOnly = { en: "lg:hidden", ja: "xl:hidden" };
-const desktopBlock = { en: "lg:block", ja: "xl:block" };
+// Six nav links plus the language switch and quote button need the width of xl in both languages
+const desktop = { en: "xl:flex", ja: "xl:flex" };
+const mobileOnly = { en: "xl:hidden", ja: "xl:hidden" };
+const desktopBlock = { en: "xl:block", ja: "xl:block" };
 
 export function SiteHeader({ locale = "en" }) {
   const pathname = usePathname();
