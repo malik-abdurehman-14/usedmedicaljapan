@@ -36,11 +36,11 @@ export const mainNav = [
   { label: "Contact", href: "/contact" },
 ];
 
+// Japanese is a single landing page, so its nav jumps to sections
 export const jaNav = [
-  { label: "取扱機器", href: "/ja/equipment", hasMenu: true },
-  { label: "サービス", href: "/ja/services" },
-  { label: "ご購入の流れ", href: "/ja/how-it-works" },
-  { label: "私たちについて", href: "/ja/about" },
-  { label: "お問い合わせ", href: "/ja/contact" },
-  { label: "医療機器買取", href: "/ja/kaitori" },
+  { label: "取扱機器", href: "/ja#equipment" },
+  { label: "私たちについて", href: "/ja#about" },
+  { label: "ご購入の流れ", href: "/ja#process" },
+  { label: "会社概要", href: "/ja#company" },
+  { label: "お問い合わせ", href: "/ja#contact" },
 ];

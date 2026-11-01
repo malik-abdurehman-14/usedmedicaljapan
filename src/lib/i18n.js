@@ -1,26 +1,31 @@
-// Locale helpers. English pages live at the root, Japanese pages under /ja.
+// Locale helpers. The English site lives at the root. Japanese is a single landing page at /ja,
+// so Japanese links to other pages point at a section of that page or at the English page.
 
 export const locales = ["en", "ja"];
 
-// Japanese-only pages with no English counterpart
-const jaOnlyPaths = ["/kaitori"];
+// English page → section of the Japanese landing page that covers it
+const jaSections = {
+  "/": "/ja",
+  "/equipment": "/ja#equipment",
+  "/how-it-works": "/ja#process",
+  "/about": "/ja#about",
+  "/contact": "/ja#contact",
+  "/services": "/ja",
+};
 
-/** "/services" → "/ja/services" for Japanese, "/" → "/ja". English hrefs pass through. */
+/** Where `href` points in the given locale. Pages without a Japanese section (product pages) stay English. */
 export function localePath(locale, href) {
   if (locale !== "ja" || !href.startsWith("/")) return href;
-  return href === "/" ? "/ja" : `/ja${href}`;
+  return jaSections[href.split("?")[0]] ?? href;
 }
 
-/** The same page in the other language. Japanese-only pages switch to the English home. */
+/** The other language: English pages switch to the Japanese landing page and back to the English home. */
 export function switchLocalePath(pathname) {
-  if (pathname === "/ja" || pathname.startsWith("/ja/")) {
-    const en = pathname.slice(3) || "/";
-    return jaOnlyPaths.some((p) => en.startsWith(p)) ? "/" : en;
-  }
-  return localePath("ja", pathname);
+  return pathname === "/ja" || pathname.startsWith("/ja/") ? "/" : "/ja";
 }
 
-/** Metadata alternates for a page that exists in both languages. `path` is the English path. */
+/** Metadata alternates. `path` is the English path; only the home page has a Japanese version. */
 export function alternates(locale, path) {
-  return { canonical: localePath(locale, path), languages: { en: path, ja: localePath("ja", path) } };
+  const canonical = locale === "ja" ? "/ja" : path;
+  return path === "/" ? { canonical, languages: { en: "/", ja: "/ja" } } : { canonical };
 }

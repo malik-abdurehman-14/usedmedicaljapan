@@ -40,7 +40,7 @@ Production check:
 | `src/data/site.js` | Email, phone, WhatsApp number, address (placeholders!) |
 | `src/data/equipment.js` | 9 products: text, specs, brands, FAQs, images |
 | `src/data/equipment.ja.js` | Japanese text for the 9 products |
-| `src/data/content.js` / `content.ja.js` | Process steps, services, FAQs, company profile (English / Japanese), buyback page text |
+| `src/data/content.js` / `content.ja.js` | Process steps, services, FAQs, company profile (English / Japanese) |
 | `src/views/*` | Page layouts with their English and Japanese copy side by side |
 | `public/images/equipment/` | Images (WebP) |
 
@@ -48,8 +48,8 @@ Add a new product: add one object to `equipment.js` — the page, menu, sitemap 
 
 ## Structure
     src/app/(site)/            English routes (home, equipment, [slug], services, how-it-works, about, contact)
-    src/app/ja/                Japanese routes, same pages under /ja, plus /ja/kaitori (equipment buyback from Japanese hospitals)
-    src/views/                 One component per page, rendered by both the English and the Japanese route
+    src/app/ja/                Japanese site: a single landing page at /ja (products, about, story, company, contact)
+    src/views/                 One component per page; the home and its about/contact sections also render in Japanese
     src/components/ui/         shadcn components (JS)
     src/components/layout/     Header, footer, WhatsApp button
     src/components/shared/     Section, headings, timeline, FAQ, breadcrumbs, seal, CTA

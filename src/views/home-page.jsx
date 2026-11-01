@@ -10,6 +10,9 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { ProcessTimeline } from "@/components/shared/process-timeline";
 import { FaqList } from "@/components/shared/faq-list";
 import { CtaBand } from "@/components/shared/cta-band";
+import { Container } from "@/components/shared/container";
+import { AboutSections } from "@/views/about-page";
+import { ContactDetails } from "@/views/contact-page";
 import { getEquipmentList } from "@/data/equipment";
 import { getContent } from "@/data/content";
 import { alternates, localePath } from "@/lib/i18n";
@@ -68,6 +71,8 @@ const copy = {
     faqTitle: "よくあるご質問",
     faqText: "お探しの回答が見つからない場合は、お気軽に直接お問い合わせください。",
     faqLink: "お問い合わせ",
+    contactTitle: "お問い合わせ・お見積り依頼",
+    contactText: "必要な機器と納入先をお知らせください。在庫のある機器、写真、価格をご案内します。",
   },
 };
 
@@ -82,8 +87,13 @@ const slideImages = {
 
 export const homeMetadata = (locale) => ({ ...copy[locale].meta, alternates: alternates(locale, "/") });
 
+/**
+ * Home page. The Japanese site is this one page, so in Japanese it also carries the About,
+ * story and company sections and the contact form, and drops buttons that would link to itself.
+ */
 export function HomePage({ locale }) {
   const c = copy[locale];
+  const isJa = locale === "ja";
   const equipment = getEquipmentList(locale);
   const { generalFaqs, processSteps } = getContent(locale);
   const slides = Object.entries(slideImages).map(([slug, image]) => {
@@ -96,12 +106,14 @@ export function HomePage({ locale }) {
       <Hero locale={locale} />
       <FactStrip locale={locale} />
 
-      <Section tone="paper">
+      <Section tone="paper" id="equipment">
         <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <SectionHeading kicker={c.equipmentKicker} title={c.equipmentTitle} description={c.equipmentText} />
-          <Button asChild variant="outline" className="shrink-0">
-            <Link href={localePath(locale, "/equipment")}>{c.viewAll}</Link>
-          </Button>
+          {!isJa && (
+            <Button asChild variant="outline" className="shrink-0">
+              <Link href="/equipment">{c.viewAll}</Link>
+            </Button>
+          )}
         </div>
         <EquipmentGrid items={equipment} locale={locale} />
       </Section>
@@ -114,12 +126,16 @@ export function HomePage({ locale }) {
 
       <WhyJapan locale={locale} />
 
-      <Section tone="paper">
+      {isJa && <AboutSections locale={locale} withTitle />}
+
+      <Section tone="paper" id="process">
         <div className="mb-14 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <SectionHeading kicker={c.processKicker} title={c.processTitle} description={c.processText} />
-          <Button asChild variant="outline" className="shrink-0">
-            <Link href={localePath(locale, "/how-it-works")}>{c.processLink}</Link>
-          </Button>
+          {!isJa && (
+            <Button asChild variant="outline" className="shrink-0">
+              <Link href="/how-it-works">{c.processLink}</Link>
+            </Button>
+          )}
         </div>
         <ProcessTimeline steps={processSteps} />
       </Section>
@@ -135,7 +151,16 @@ export function HomePage({ locale }) {
         </div>
       </Section>
 
-      <CtaBand locale={locale} />
+      {isJa ? (
+        <section id="contact" className="border-t border-line bg-paper py-20 md:py-28">
+          <Container>
+            <SectionHeading title={c.contactTitle} description={c.contactText} />
+          </Container>
+          <ContactDetails locale={locale} className="mt-12" />
+        </section>
+      ) : (
+        <CtaBand locale={locale} />
+      )}
     </>
   );
 }

@@ -15,6 +15,7 @@ const copy = {
         "A Japan-based supplier of used medical imaging equipment, connecting Japanese hospitals with buyers worldwide.",
     },
     breadcrumb: "About",
+    kicker: "About us",
     title: "A bridge between hospitals that upgrade and hospitals that grow",
     missionTitle: "Our mission",
     mission: [
@@ -44,6 +45,7 @@ const copy = {
       description: "日本の医療機関と世界の病院をつなぎ、中古医療機器の調達・輸出を行っています。",
     },
     breadcrumb: "私たちについて",
+    kicker: "私たちについて｜ABOUT US",
     title: "設備を更新する病院と、成長を目指す病院をつなぐ架け橋",
     missionTitle: "私たちの使命",
     mission: [
@@ -51,7 +53,7 @@ const copy = {
       "医療機器の活用期間を延ばし、より多くの医療機関が医療技術を利用できる環境を整えるとともに、国境を越えた医療機器の再利用を通じて、持続可能な医療の実現に貢献することを目指しています。",
     ],
     imageAlt: "病院の検査室に設置されたCT装置",
-    storyKicker: "私たちのストーリー",
+    storyKicker: "私たちのストーリー｜OUR STORY",
     storyTitle: "良質な医療機器に、もう一度活躍の場を。",
     story: [
       "日本の病院では、定期的な医療機器の更新が行われています。その中には、まだ十分に活用できる可能性を持ち、ほかの医療機関で引き続き役立てることができる中古医療機器もあります。一方、世界各国の病院やクリニックでは、新品よりも導入コストを抑えながら、必要な医療機器を確保したいというニーズがあります。",
@@ -75,15 +77,33 @@ export const aboutMetadata = (locale) => ({ ...copy[locale].meta, alternates: al
 
 export function AboutPage({ locale }) {
   const c = copy[locale];
-  const { companyProfile } = getContent(locale);
   return (
     <>
       <PageHero breadcrumbs={[{ label: c.breadcrumb }]} locale={locale} title={c.title} />
+      <AboutSections locale={locale} />
+      <CtaBand locale={locale} />
+    </>
+  );
+}
 
-      <Section tone="paper">
+/**
+ * Mission, story, principles and company profile. On the About page the page hero carries the title;
+ * `withTitle` repeats it above the mission for pages without that hero (the Japanese landing page).
+ */
+export function AboutSections({ locale, withTitle = false }) {
+  const c = copy[locale];
+  const { companyProfile } = getContent(locale);
+  return (
+    <>
+      <Section tone="paper" id="about">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
-          <SectionHeading title={c.missionTitle} />
+          {withTitle ? (
+            <SectionHeading kicker={c.kicker} title={c.title} />
+          ) : (
+            <SectionHeading title={c.missionTitle} />
+          )}
           <div className="max-w-[60ch] space-y-5 text-lead text-ink/85">
+            {withTitle && <h3 className="text-subtitle">{c.missionTitle}</h3>}
             {c.mission.map((p) => (
               <p key={p}>{p}</p>
             ))}
@@ -91,7 +111,7 @@ export function AboutPage({ locale }) {
         </div>
       </Section>
 
-      <Section>
+      <Section id="story">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
           <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-mist">
             <Image src="/images/equipment/ct-room.webp" alt={c.imageAlt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
@@ -117,7 +137,7 @@ export function AboutPage({ locale }) {
         </div>
       </Section>
 
-      <Section>
+      <Section id="company">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
           <div className="flex items-start justify-between gap-6 lg:flex-col">
             <SectionHeading title={c.profileTitle} description={c.profileSubtitle} />
@@ -133,8 +153,6 @@ export function AboutPage({ locale }) {
           </dl>
         </div>
       </Section>
-
-      <CtaBand locale={locale} />
     </>
   );
 }

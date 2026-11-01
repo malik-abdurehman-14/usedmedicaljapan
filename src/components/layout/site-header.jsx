@@ -37,6 +37,24 @@ const copy = {
   },
 };
 
+/** Language switch, styled as a coloured pill so it stands out on every screen size. */
+function LanguageSwitch({ href, locale, className }) {
+  const t = copy[locale];
+  return (
+    <Link
+      href={href}
+      hrefLang={t.switchLang}
+      className={cn(
+        "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-teal bg-teal-tint font-medium text-teal transition-colors hover:bg-teal hover:text-white",
+        className
+      )}
+    >
+      <Languages className="size-4" aria-hidden />
+      {t.switchLabel}
+    </Link>
+  );
+}
+
 // Japanese labels run wider, so the Japanese desktop nav starts at xl instead of lg
 const desktop = { en: "lg:flex", ja: "xl:flex" };
 const mobileOnly = { en: "lg:hidden", ja: "xl:hidden" };
@@ -87,7 +105,7 @@ export function SiteHeader({ locale = "en" }) {
         scrolled ? "border-b border-line shadow-[0_1px_0_rgb(14_42_71/0.02)]" : "border-b border-transparent"
       )}
     >
-      <Container className="flex h-[76px] items-center justify-between gap-6">
+      <Container className="flex h-[76px] items-center justify-between gap-4 xl:gap-6">
         <Logo href={home} locale={locale} className="shrink-0 whitespace-nowrap" />
 
         <nav aria-label="Main" className={cn("hidden items-center gap-1", desktop[locale])}>
@@ -100,7 +118,7 @@ export function SiteHeader({ locale = "en" }) {
                   aria-controls="equipment-menu"
                   onClick={() => setMenuOpen((v) => !v)}
                   className={cn(
-                    "inline-flex h-10 items-center gap-1 whitespace-nowrap rounded-sm px-3 text-[0.95rem] transition-colors hover:text-teal",
+                    "inline-flex h-10 items-center gap-1 whitespace-nowrap rounded-sm px-2.5 text-[0.95rem] xl:px-3 transition-colors hover:text-teal",
                     isActive(item.href) || menuOpen ? "text-teal" : "text-ink"
                   )}
                 >
@@ -113,7 +131,7 @@ export function SiteHeader({ locale = "en" }) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "inline-flex h-10 items-center whitespace-nowrap rounded-sm px-3 text-[0.95rem] transition-colors hover:text-teal",
+                  "inline-flex h-10 items-center whitespace-nowrap rounded-sm px-2.5 text-[0.95rem] xl:px-3 transition-colors hover:text-teal",
                   isActive(item.href) ? "text-teal" : "text-ink"
                 )}
               >
@@ -124,20 +142,16 @@ export function SiteHeader({ locale = "en" }) {
         </nav>
 
         <div className={cn("hidden items-center gap-2", desktop[locale])}>
-          <Link
-            href={switchLocalePath(pathname)}
-            hrefLang={t.switchLang}
-            className="inline-flex h-10 items-center gap-1.5 whitespace-nowrap rounded-sm px-3 text-sm text-slate transition-colors hover:text-ink"
-          >
-            <Languages className="size-4" aria-hidden />
-            {t.switchLabel}
-          </Link>
+          <LanguageSwitch href={switchLocalePath(pathname)} locale={locale} className="h-10 px-3 text-sm xl:px-4" />
           <Button asChild>
             <Link href={localePath(locale, "/contact")}>{t.quote}</Link>
           </Button>
         </div>
 
-        <MobileMenu nav={nav} locale={locale} equipment={equipment} switchHref={switchLocalePath(pathname)} />
+        <div className={cn("flex items-center gap-1.5", mobileOnly[locale])}>
+          <LanguageSwitch href={switchLocalePath(pathname)} locale={locale} className="h-9 px-3 text-sm" />
+          <MobileMenu nav={nav} locale={locale} equipment={equipment} switchHref={switchLocalePath(pathname)} />
+        </div>
       </Container>
 
       {/* Equipment mega menu */}
@@ -202,7 +216,7 @@ function MobileMenu({ nav, locale, equipment, switchHref }) {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className={mobileOnly[locale]} aria-label={t.openMenu}>
+        <Button variant="ghost" size="icon" aria-label={t.openMenu}>
           <Menu className="size-6" />
         </Button>
       </SheetTrigger>
