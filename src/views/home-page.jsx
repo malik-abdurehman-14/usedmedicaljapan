@@ -10,9 +10,6 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { ProcessTimeline } from "@/components/shared/process-timeline";
 import { FaqList } from "@/components/shared/faq-list";
 import { CtaBand } from "@/components/shared/cta-band";
-import { Container } from "@/components/shared/container";
-import { AboutSections } from "@/views/about-page";
-import { ContactDetails } from "@/views/contact-page";
 import { getEquipmentList } from "@/data/equipment";
 import { getContent } from "@/data/content";
 import { alternates, localePath } from "@/lib/i18n";
@@ -43,37 +40,6 @@ const copy = {
     faqText: "Can't find your answer? Ask us directly and we will get back to you.",
     faqLink: "Contact us",
   },
-  ja: {
-    meta: {
-      title: { absolute: "日本の中古医療機器｜MRI・CT・X線装置の輸出 | Used Medical Japan" },
-      description:
-        "日本の病院から調達した中古のMRI、CT、PET-CT、X線、Cアーム、マンモグラフィ、超音波診断装置を、検査のうえ世界各国へ輸出します。",
-    },
-    equipmentKicker: "取扱機器",
-    equipmentTitle: "9カテゴリーの画像診断機器",
-    equipmentText:
-      "高磁場MRIからポータブル超音波まで。各カテゴリーのページでは、メーカー、構成、ご提供できる資料をご確認いただけます。",
-    viewAll: "機器一覧を見る",
-    sliderTitle: "各機器を詳しく見る",
-    sliderText: "カテゴリーごとの参考画像です。対象機器の写真・動画は、お見積りとあわせてお送りします。",
-    slides: {
-      "used-ct-scanners": "すべての機器で管球履歴を報告するマルチスライスCT。",
-      "used-pet-ct-scanners": "核医学診療を始める腫瘍センター向けのPET-CT。",
-      "used-mri-machines": "ヘリウム残量とコイル一覧を記録した1.5T・3.0T MRI。",
-      "used-spect-gamma-cameras": "各コリメータを記載した2検出器SPECT-CT。",
-      "used-mammography-machines": "検診プログラム向けのデジタル・3Dトモシンセシスマンモグラフィ。",
-      "used-c-arm-systems": "航空輸送が可能で、すぐに使用を開始できる移動型Cアーム。",
-    },
-    processKicker: "ご購入の流れ",
-    processTitle: "最初のお問い合わせから、港への到着まで",
-    processText: "6つのステップを、英語と日本語に対応する一人の担当者がサポートします。",
-    processLink: "詳しい流れを見る",
-    faqTitle: "よくあるご質問",
-    faqText: "お探しの回答が見つからない場合は、お気軽に直接お問い合わせください。",
-    faqLink: "お問い合わせ",
-    contactTitle: "お問い合わせ・お見積り依頼",
-    contactText: "必要な機器と納入先をお知らせください。在庫のある機器、写真、価格をご案内します。",
-  },
 };
 
 const slideImages = {
@@ -87,13 +53,8 @@ const slideImages = {
 
 export const homeMetadata = (locale) => ({ ...copy[locale].meta, alternates: alternates(locale, "/") });
 
-/**
- * Home page. The Japanese site is this one page, so in Japanese it also carries the About,
- * story and company sections and the contact form, and drops buttons that would link to itself.
- */
 export function HomePage({ locale }) {
   const c = copy[locale];
-  const isJa = locale === "ja";
   const equipment = getEquipmentList(locale);
   const { generalFaqs, processSteps } = getContent(locale);
   const slides = Object.entries(slideImages).map(([slug, image]) => {
@@ -106,14 +67,12 @@ export function HomePage({ locale }) {
       <Hero locale={locale} />
       <FactStrip locale={locale} />
 
-      <Section tone="paper" id="equipment">
+      <Section tone="paper">
         <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <SectionHeading kicker={c.equipmentKicker} title={c.equipmentTitle} description={c.equipmentText} />
-          {!isJa && (
-            <Button asChild variant="outline" className="shrink-0">
-              <Link href="/equipment">{c.viewAll}</Link>
-            </Button>
-          )}
+          <Button asChild variant="outline" className="shrink-0">
+            <Link href={localePath(locale, "/equipment")}>{c.viewAll}</Link>
+          </Button>
         </div>
         <EquipmentGrid items={equipment} locale={locale} />
       </Section>
@@ -126,16 +85,12 @@ export function HomePage({ locale }) {
 
       <WhyJapan locale={locale} />
 
-      {isJa && <AboutSections locale={locale} withTitle />}
-
-      <Section tone="paper" id="process">
+      <Section tone="paper">
         <div className="mb-14 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <SectionHeading kicker={c.processKicker} title={c.processTitle} description={c.processText} />
-          {!isJa && (
-            <Button asChild variant="outline" className="shrink-0">
-              <Link href="/how-it-works">{c.processLink}</Link>
-            </Button>
-          )}
+          <Button asChild variant="outline" className="shrink-0">
+            <Link href={localePath(locale, "/how-it-works")}>{c.processLink}</Link>
+          </Button>
         </div>
         <ProcessTimeline steps={processSteps} />
       </Section>
@@ -151,16 +106,7 @@ export function HomePage({ locale }) {
         </div>
       </Section>
 
-      {isJa ? (
-        <section id="contact" className="border-t border-line bg-paper py-20 md:py-28">
-          <Container>
-            <SectionHeading title={c.contactTitle} description={c.contactText} />
-          </Container>
-          <ContactDetails locale={locale} className="mt-12" />
-        </section>
-      ) : (
-        <CtaBand locale={locale} />
-      )}
+      <CtaBand locale={locale} />
     </>
   );
 }

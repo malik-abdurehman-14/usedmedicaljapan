@@ -28,7 +28,7 @@ const copy = {
   ja: {
     switchLabel: "English",
     switchLang: "en",
-    quote: "お見積り依頼",
+    quote: "無料査定を依頼",
     menu: "メニュー",
     openMenu: "メニューを開く",
     menuTitle: "どの機器が適しているかお悩みですか？",
@@ -49,7 +49,7 @@ function LanguageSwitch({ href, locale, className }) {
         className
       )}
     >
-      <Languages className="size-4" aria-hidden />
+      <Languages className="size-4 max-sm:hidden" aria-hidden />
       {t.switchLabel}
     </Link>
   );
@@ -106,7 +106,8 @@ export function SiteHeader({ locale = "en" }) {
       )}
     >
       <Container className="flex h-[76px] items-center justify-between gap-4 xl:gap-6">
-        <Logo href={home} locale={locale} className="shrink-0 whitespace-nowrap" />
+        {/* On phones the name wraps to two lines so the language switch and menu stay in view */}
+        <Logo href={home} locale={locale} className="min-w-0 sm:shrink-0 sm:whitespace-nowrap" />
 
         <nav aria-label="Main" className={cn("hidden items-center gap-1", desktop[locale])}>
           {nav.map((item) =>
@@ -149,7 +150,7 @@ export function SiteHeader({ locale = "en" }) {
         </div>
 
         <div className={cn("flex items-center gap-1.5", mobileOnly[locale])}>
-          <LanguageSwitch href={switchLocalePath(pathname)} locale={locale} className="h-9 px-3 text-sm" />
+          <LanguageSwitch href={switchLocalePath(pathname)} locale={locale} className="h-9 shrink-0 px-3 text-sm" />
           <MobileMenu nav={nav} locale={locale} equipment={equipment} switchHref={switchLocalePath(pathname)} />
         </div>
       </Container>

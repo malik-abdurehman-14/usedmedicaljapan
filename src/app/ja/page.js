@@ -1,7 +1,7 @@
-import { HomePage, homeMetadata } from "@/views/home-page";
+import { JaLandingPage, jaLandingMetadata } from "@/views/ja-landing-page";
 
-export const metadata = homeMetadata("ja");
+export const metadata = jaLandingMetadata;
 
 export default function Page() {
-  return <HomePage locale="ja" />;
+  return <JaLandingPage />;
 }

@@ -7,8 +7,8 @@ import { WhatsAppButton } from "@/components/layout/whatsapp-button";
 
 export const metadata = {
   title: {
-    default: "日本の中古医療機器｜MRI・CT・X線装置の輸出 | Used Medical Japan",
-    template: "%s | Used Medical Japan",
+    default: "中古医療機器の買取｜MRI・CT・X線装置 | Used Medical Equipment Japan",
+    template: "%s | Used Medical Equipment Japan",
   },
   openGraph: { locale: "ja_JP" },
 };

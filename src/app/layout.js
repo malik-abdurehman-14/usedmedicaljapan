@@ -15,7 +15,6 @@ export const metadata = {
   applicationName: site.name,
   alternates: {
     canonical: "/",
-    languages: { en: "/", ja: "/ja" },
   },
   openGraph: {
     type: "website",

@@ -37,12 +37,10 @@ export const mainNav = [
   { label: "Contact", href: "/contact" },
 ];
 
-// Japanese is a single landing page, so its nav jumps to sections
+// Japanese is a single landing page (equipment buyback), so its nav jumps to sections
 export const jaNav = [
   { label: "ホーム", href: "/ja" },
-  { label: "取扱機器", href: "/ja#equipment" },
   { label: "私たちについて", href: "/ja#about" },
-  { label: "ご購入の流れ", href: "/ja#process" },
   { label: "会社概要", href: "/ja#company" },
   { label: "お問い合わせ", href: "/ja#contact" },
 ];

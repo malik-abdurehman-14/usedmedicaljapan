@@ -63,9 +63,9 @@ const copy = {
     ],
     principlesTitle: "私たちの仕事の進め方",
     principles: [
-      { title: "機器の状態をありのままに", text: "状態、使用状況、欠品は、納品後ではなく、お支払い前に報告書に記載します。" },
-      { title: "説明よりも、実物を", text: "対象機器の写真や動画をお見せします。日本での実機確認もいつでも歓迎します。" },
-      { title: "担当者は一人", text: "最初のご連絡から出荷まで、同じ担当者が英語または日本語で対応します。" },
+      { title: "わかりやすい査定", text: "写真や資料をもとに機種・年式・状態を確認し、買取価格を明確にご提示します。" },
+      { title: "院内のご負担を最小限に", text: "撤去・搬出の日程は病院様のご都合に合わせ、専門技術者が作業を行います。" },
+      { title: "担当者は一人", text: "最初のご連絡からお支払いまで、同じ担当者が責任を持って対応します。" },
     ],
     profileTitle: "会社概要",
     profileSubtitle: "Company profile",
@@ -143,11 +143,14 @@ export function AboutSections({ locale, withTitle = false }) {
             <SectionHeading title={c.profileTitle} description={c.profileSubtitle} />
             <InspectionSeal label={c.seal} className="size-28 -rotate-6 opacity-90" />
           </div>
-          <dl className="border-t border-line">
+          <dl className="min-w-0 border-t border-line">
             {companyProfile.map((r) => (
-              <div key={r.label} className="grid grid-cols-[9rem_1fr] gap-6 border-b border-line py-4 sm:grid-cols-[12rem_1fr]">
+              <div
+                key={r.label}
+                className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-4 border-b border-line py-4 sm:grid-cols-[12rem_minmax(0,1fr)] sm:gap-6"
+              >
                 <dt className="text-slate">{r.label}</dt>
-                <dd className="text-ink">{r.value}</dd>
+                <dd className="text-ink [overflow-wrap:anywhere]">{r.value}</dd>
               </div>
             ))}
           </dl>

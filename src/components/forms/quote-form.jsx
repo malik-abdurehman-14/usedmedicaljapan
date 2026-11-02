@@ -252,7 +252,7 @@ export function QuoteForm({ defaultEquipment = "", locale = "en", className, com
               name="equipment"
               value={selected}
               onChange={(e) => setSelected(e.target.value)}
-              className="h-11 w-full appearance-none rounded-sm border border-input bg-white px-3.5 pr-10 text-[0.95rem] text-ink focus-visible:border-teal focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-teal/15"
+              className="h-11 w-full appearance-none rounded-sm border border-input bg-white px-3.5 pr-10 text-base text-ink md:text-[0.95rem] focus-visible:border-teal focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-teal/15"
             >
               <option value="">{t.undecided}</option>
               {options.map((e) => (

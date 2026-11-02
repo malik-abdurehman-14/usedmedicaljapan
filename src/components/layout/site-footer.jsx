@@ -5,6 +5,7 @@ import { Logo } from "@/components/shared/logo";
 import { getEquipmentList } from "@/data/equipment";
 import { getSite, whatsappLink } from "@/data/site";
 import { localePath } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
 const copy = {
   en: {
@@ -22,13 +23,12 @@ const copy = {
     trademarks: "Product names and trademarks belong to their respective owners.",
   },
   ja: {
-    tagline: "日本の病院から調達した中古医療画像機器を、検査のうえ世界各国へ輸出しています。",
+    tagline: "病院・クリニック様の使用済み医療機器を買い取り、必要とする海外の医療機関で再活用しています。",
     equipment: "取扱機器",
     company: "会社情報",
     contact: "お問い合わせ",
     links: [
       { label: "私たちについて", href: "/ja#about" },
-      { label: "ご購入の流れ", href: "/ja#process" },
       { label: "会社概要", href: "/ja#company" },
       { label: "お問い合わせ", href: "/ja#contact" },
       { label: "English site", href: "/" },
@@ -42,24 +42,32 @@ export function SiteFooter({ locale = "en" }) {
   const site = getSite(locale);
   return (
     <footer className="bg-[#0a2139] text-white/75">
-      <Container className="grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-[1.3fr_1.4fr_0.9fr_1.1fr]">
+      <Container
+        className={cn(
+          "grid gap-12 py-16 md:grid-cols-2",
+          locale === "en" ? "lg:grid-cols-[1.3fr_1.4fr_0.9fr_1.1fr]" : "lg:grid-cols-[1.4fr_0.9fr_1.1fr]"
+        )}
+      >
         <div>
           <Logo href={localePath(locale, "/")} locale={locale} invert />
           <p className="mt-5 max-w-[34ch] text-[0.95rem] leading-relaxed">{t.tagline}</p>
         </div>
 
-        <div>
-          <h2 className="text-sm font-medium text-white">{t.equipment}</h2>
-          <ul className="mt-4 grid grid-cols-1 gap-2 text-[0.95rem] sm:grid-cols-2">
-            {getEquipmentList(locale).map((e) => (
-              <li key={e.slug}>
-                <Link href={localePath(locale, `/equipment/${e.slug}`)} className="transition-colors hover:text-white">
-                  {e.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* The Japanese site is for sellers in Japan, so it does not list the equipment we sell abroad */}
+        {locale === "en" && (
+          <div>
+            <h2 className="text-sm font-medium text-white">{t.equipment}</h2>
+            <ul className="mt-4 grid grid-cols-1 gap-2 text-[0.95rem] sm:grid-cols-2">
+              {getEquipmentList(locale).map((e) => (
+                <li key={e.slug}>
+                  <Link href={localePath(locale, `/equipment/${e.slug}`)} className="transition-colors hover:text-white">
+                    {e.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <div>
           <h2 className="text-sm font-medium text-white">{t.company}</h2>
