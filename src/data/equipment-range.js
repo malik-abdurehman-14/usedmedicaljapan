@@ -65,3 +65,16 @@ export const equipmentRange = {
     },
   ],
 };
+
+/** Category page → its name in the range, so product pages can pre-select the quote form. */
+export const rangeNameBySlug = {
+  "used-mri-machines": "MRI systems",
+  "used-ct-scanners": "CT scanners",
+  "used-pet-ct-scanners": "PET/CT and related imaging equipment",
+  "used-spect-gamma-cameras": "PET/CT and related imaging equipment",
+  "used-angiography-systems": "Angiography systems",
+  "used-c-arm-systems": "C-Arm / surgical X-Ray systems",
+  "used-x-ray-machines": "X-Ray systems",
+  "used-mammography-machines": "Mammography systems",
+  "used-ultrasound-machines": "Ultrasound systems",
+};

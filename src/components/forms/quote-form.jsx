@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { equipment, getEquipmentList } from "@/data/equipment";
+import { equipmentRange, rangeNameBySlug } from "@/data/equipment-range";
 import { getSite, whatsappLink } from "@/data/site";
 import { cn } from "@/lib/utils";
 
@@ -38,6 +38,7 @@ const copy = {
     },
     subject: (data) => `Quote request from ${data.name} (${data.country})`,
     undecided: "Not decided yet",
+    other: "Other",
     sentTitle: "Thank you. Your request has been sent.",
     sentText: (hours) => `We will reply within one business day (${hours}) with available units, photos and pricing.`,
     sendAnother: "Send another request",
@@ -83,6 +84,7 @@ const copy = {
     },
     subject: (data) => `お見積り依頼：${data.name}様（${data.country}）`,
     undecided: "未定",
+    other: "その他",
     sentTitle: "ありがとうございます。ご依頼を送信しました。",
     sentText: (hours) => `1営業日以内（${hours}）に、在庫のある機器、写真、価格をご案内します。`,
     sendAnother: "別の依頼を送信する",
@@ -114,16 +116,17 @@ const copy = {
 export function QuoteForm({ defaultEquipment = "", locale = "en", className, compact = false }) {
   const t = copy[locale];
   const site = getSite(locale);
-  const options = getEquipmentList(locale);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error | email | whatsapp
-  const [selected, setSelected] = useState(defaultEquipment);
+  // Options are the range names; `defaultEquipment` and ?equipment= take a category page slug
+  const preset = rangeNameBySlug[defaultEquipment] ?? "";
+  const [selected, setSelected] = useState(preset);
 
   // Pre-select equipment from ?equipment=slug (keeps the page static)
   useEffect(() => {
     if (defaultEquipment) return;
     const slug = new URLSearchParams(window.location.search).get("equipment");
-    if (slug && equipment.some((e) => e.slug === slug)) setSelected(slug);
+    if (rangeNameBySlug[slug]) setSelected(rangeNameBySlug[slug]);
   }, [defaultEquipment]);
 
   function collect(form) {
@@ -140,7 +143,6 @@ export function QuoteForm({ defaultEquipment = "", locale = "en", className, com
   }
 
   function compose(data) {
-    const item = options.find((e) => e.slug === data.equipment);
     const m = t.message;
     return [
       m.heading,
@@ -150,7 +152,7 @@ export function QuoteForm({ defaultEquipment = "", locale = "en", className, com
       `${m.country}: ${data.country}`,
       data.email && `${m.email}: ${data.email}`,
       data.whatsapp && `${m.whatsapp}: ${data.whatsapp}`,
-      `${m.equipment}: ${item ? item.name : t.undecided}`,
+      `${m.equipment}: ${data.equipment || t.undecided}`,
       "",
       data.message && `${m.requirement}:\n${data.message}`,
     ]
@@ -164,12 +166,10 @@ export function QuoteForm({ defaultEquipment = "", locale = "en", className, com
   }
 
   async function submitToSheet(form, data) {
-    // The sheet always records the English equipment name, whatever the page language
-    const item = equipment.find((e) => e.slug === data.equipment);
     // URL-encoded body keeps this a "simple" CORS request, which Apps Script accepts without a preflight.
     const body = new URLSearchParams({
       ...data,
-      equipment: item ? item.name : "Not decided yet",
+      equipment: data.equipment || "Not decided yet",
       page: window.location.href,
     });
     setStatus("sending");
@@ -178,7 +178,7 @@ export function QuoteForm({ defaultEquipment = "", locale = "en", className, com
       const json = await res.json();
       if (!json.ok) throw new Error(json.error || "Submission failed");
       form.reset();
-      setSelected(defaultEquipment);
+      setSelected(preset);
       setStatus("sent");
     } catch {
       setStatus("error");
@@ -255,11 +255,16 @@ export function QuoteForm({ defaultEquipment = "", locale = "en", className, com
               className="h-11 w-full appearance-none rounded-sm border border-input bg-white px-3.5 pr-10 text-base text-ink md:text-[0.95rem] focus-visible:border-teal focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-teal/15"
             >
               <option value="">{t.undecided}</option>
-              {options.map((e) => (
-                <option key={e.slug} value={e.slug}>
-                  {e.name}
-                </option>
+              {equipmentRange.groups.map((g) => (
+                <optgroup key={g.id} label={g.title}>
+                  {g.items.map((item) => (
+                    <option key={item.name} value={item.name}>
+                      {item.name}
+                    </option>
+                  ))}
+                </optgroup>
               ))}
+              <option value="Other">{t.other}</option>
             </select>
             <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 size-4 -translate-y-1/2 text-slate" aria-hidden />
           </div>
