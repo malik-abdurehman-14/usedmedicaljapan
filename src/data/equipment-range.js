@@ -1,5 +1,4 @@
-// Full equipment range, grouped as in the client's company profile. Items with their own
-// category page link to it; the rest are sourced on request and listed by name only.
+// Full equipment range, grouped as in the client's company profile. Listed by name only.
 
 export const equipmentRange = {
   intro:
@@ -10,16 +9,16 @@ export const equipmentRange = {
       id: "imaging",
       title: "Diagnostic Imaging",
       items: [
-        { name: "MRI systems", slug: "used-mri-machines" },
-        { name: "CT scanners", slug: "used-ct-scanners" },
-        { name: "X-Ray systems", slug: "used-x-ray-machines" },
+        { name: "MRI systems" },
+        { name: "CT scanners" },
+        { name: "X-Ray systems" },
         { name: "Mobile X-Ray systems" },
-        { name: "C-Arm / surgical X-Ray systems", slug: "used-c-arm-systems" },
-        { name: "Angiography systems", slug: "used-angiography-systems" },
-        { name: "Mammography systems", slug: "used-mammography-machines" },
-        { name: "Ultrasound systems", slug: "used-ultrasound-machines" },
+        { name: "C-Arm / surgical X-Ray systems" },
+        { name: "Angiography systems" },
+        { name: "Mammography systems" },
+        { name: "Ultrasound systems" },
         { name: "Bone densitometry systems" },
-        { name: "PET/CT and related imaging equipment", slug: "used-pet-ct-scanners" },
+        { name: "PET/CT and related imaging equipment" },
       ],
     },
     {

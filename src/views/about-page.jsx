@@ -19,14 +19,14 @@ const copy = {
     title: "A bridge between hospitals that upgrade and hospitals that grow",
     missionTitle: "Our mission",
     mission: [
-      "Used Medical Japan was established to connect healthcare providers in Japan upgrading their medical equipment with hospitals and medical institutions worldwide seeking affordable, quality pre-owned equipment. Our mission is to extend the life of medical equipment, make healthcare technology more accessible, and promote sustainable reuse across borders.",
+      "Used Medical Equipment Japan was established to connect healthcare providers in Japan upgrading their medical equipment with hospitals and medical institutions worldwide seeking affordable, quality pre-owned equipment. Our mission is to extend the life of medical equipment, make healthcare technology more accessible, and promote sustainable reuse across borders.",
     ],
     imageAlt: "CT scanner in a hospital room",
     storyKicker: "Our story",
     storyTitle: "Good equipment deserves a second hospital",
     story: [
       "Hospitals in Japan regularly upgrade their medical equipment, creating opportunities for reliable pre-owned systems to continue serving patients elsewhere. Meanwhile, hospitals and clinics around the world need access to medical technology at more affordable prices.",
-      "Used Medical Japan connects these needs. We help international buyers source pre-owned medical equipment from Japan and coordinate the process, from equipment selection and condition information to shipping and export arrangements, according to each customer's requirements.",
+      "Used Medical Equipment Japan connects these needs. We help international buyers source pre-owned medical equipment from Japan and coordinate the process, from equipment selection and condition information to shipping and export arrangements, according to each customer's requirements.",
       "Our belief is simple: quality medical equipment should have the opportunity to make a difference for more patients, wherever it is needed.",
     ],
     principlesTitle: "How we work",
@@ -49,7 +49,7 @@ const copy = {
     title: "設備を更新する病院と、成長を目指す病院をつなぐ架け橋",
     missionTitle: "私たちの使命",
     mission: [
-      "Used Medical Japanは、医療機器の更新を進める日本の医療機関と、高品質な中古医療機器を適正な価格で導入したい世界各国の病院・医療機関をつなぐことを目的としています。",
+      "Used Medical Equipment Japanは、医療機器の更新を進める日本の医療機関と、高品質な中古医療機器を適正な価格で導入したい世界各国の病院・医療機関をつなぐことを目的としています。",
       "医療機器の活用期間を延ばし、より多くの医療機関が医療技術を利用できる環境を整えるとともに、国境を越えた医療機器の再利用を通じて、持続可能な医療の実現に貢献することを目指しています。",
     ],
     imageAlt: "病院の検査室に設置されたCT装置",
@@ -57,7 +57,7 @@ const copy = {
     storyTitle: "良質な医療機器に、もう一度活躍の場を。",
     story: [
       "日本の病院では、定期的な医療機器の更新が行われています。その中には、まだ十分に活用できる可能性を持ち、ほかの医療機関で引き続き役立てることができる中古医療機器もあります。一方、世界各国の病院やクリニックでは、新品よりも導入コストを抑えながら、必要な医療機器を確保したいというニーズがあります。",
-      "Used Medical Japanは、こうした双方のニーズをつなぎます。海外のお客様が日本の中古医療機器を導入できるよう、ご要望に応じて機器の選定や状態に関する情報の確認をサポートし、輸送や輸出に関する手配を調整します。",
+      "Used Medical Equipment Japanは、こうした双方のニーズをつなぎます。海外のお客様が日本の中古医療機器を導入できるよう、ご要望に応じて機器の選定や状態に関する情報の確認をサポートし、輸送や輸出に関する手配を調整します。",
       "私たちの想いはシンプルです。良質な医療機器が、必要とされる場所で、より多くの患者さんのために役立ち続けること。",
       "その実現に向けて、日本と世界の医療機関をつなぎ、医療機器の新たな活用の可能性を広げていきます。",
     ],

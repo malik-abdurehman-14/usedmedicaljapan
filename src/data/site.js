@@ -3,7 +3,7 @@
 
 export const site = {
   name: "Used Medical Equipment Japan",
-  shortName: "Used Medical Japan",
+  shortName: "Used Medical Equipment Japan",
   url: "https://usedmedicaljapan.com",
   description:
     "Pre-owned MRI, CT, PET-CT, X-ray, C-arm, mammography and ultrasound systems sourced from hospitals in Japan, inspected and exported worldwide.",

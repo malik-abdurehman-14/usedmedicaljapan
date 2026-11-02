@@ -1,10 +1,9 @@
-import Link from "next/link";
-import { Activity, ArrowUpRight, Info, ScanLine, Stethoscope, Syringe } from "lucide-react";
+import { Activity, Info, ScanLine, Stethoscope, Syringe } from "lucide-react";
 import { equipmentRange } from "@/data/equipment-range";
 
 const icons = { imaging: ScanLine, surgical: Syringe, monitoring: Activity, other: Stethoscope };
 
-/** Every equipment type we source, by group. Types with a category page link to it. */
+/** Every equipment type we source, by group, listed by name. */
 export function EquipmentRange() {
   return (
     <div>
@@ -24,24 +23,9 @@ export function EquipmentRange() {
               </div>
               <ul className="mt-3 grid gap-x-6 sm:max-md:grid-cols-2">
                 {g.items.map((item) => (
-                  <li key={item.name}>
-                    {item.slug ? (
-                      <Link
-                        href={`/equipment/${item.slug}`}
-                        className="group flex items-start gap-2.5 py-1.5 text-[0.95rem] font-medium text-ink transition-colors hover:text-teal"
-                      >
-                        <span className="mt-[0.55em] size-1.5 shrink-0 rounded-full bg-teal" aria-hidden />
-                        <span className="underline decoration-teal/30 underline-offset-4 group-hover:decoration-teal">
-                          {item.name}
-                          <ArrowUpRight className="ml-1 inline size-3.5 align-[-0.1em] text-teal" aria-hidden />
-                        </span>
-                      </Link>
-                    ) : (
-                      <span className="flex items-start gap-2.5 py-1.5 text-[0.95rem] text-ink/85">
-                        <span className="mt-[0.55em] size-1.5 shrink-0 rounded-full bg-line" aria-hidden />
-                        {item.name}
-                      </span>
-                    )}
+                  <li key={item.name} className="flex items-start gap-2.5 py-1.5 text-[0.95rem] text-ink/85">
+                    <span className="mt-[0.55em] size-1.5 shrink-0 rounded-full bg-teal" aria-hidden />
+                    {item.name}
                   </li>
                 ))}
               </ul>
@@ -52,7 +36,7 @@ export function EquipmentRange() {
       <p className="mt-6 flex items-start gap-3 text-[0.95rem] text-slate">
         <Info className="mt-0.5 size-5 shrink-0 text-teal" aria-hidden />
         <span>
-          <span className="font-medium text-ink">Note:</span> {equipmentRange.note} Linked types have a detailed category page.
+          <span className="font-medium text-ink">Note:</span> {equipmentRange.note}
         </span>
       </p>
     </div>

@@ -13,14 +13,14 @@ export function InspectionSeal({ className, label = "Inspected in Japan" }) {
           <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -0.9 1.2" result="mask" />
           <feComposite in="SourceGraphic" in2="mask" operator="in" />
         </filter>
-        <path id="seal-arc-top" d="M 22 60 A 38 38 0 0 1 98 60" />
+        <path id="seal-arc-top" d="M 24.3 73 A 38 38 0 1 1 95.7 73" />
         <path id="seal-arc-bottom" d="M 25 64 A 35 35 0 0 0 95 64" />
       </defs>
       <g filter="url(#seal-ink)" fill="currentColor" stroke="currentColor">
         <circle cx="60" cy="60" r="55" fill="none" strokeWidth="4.5" />
         <circle cx="60" cy="60" r="47" fill="none" strokeWidth="1.4" />
-        <text fontSize="9.5" fontWeight="600" letterSpacing="1.2" stroke="none">
-          <textPath href="#seal-arc-top" startOffset="50%" textAnchor="middle">Used Medical Japan</textPath>
+        <text fontSize="7.6" fontWeight="600" letterSpacing="0.45" stroke="none">
+          <textPath href="#seal-arc-top" startOffset="50%" textAnchor="middle">Used Medical Equipment Japan</textPath>
         </text>
         <text x="60" y="68" textAnchor="middle" fontSize="23" fontWeight="700" stroke="none" fontFamily="'IBM Plex Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif">
           検品済
