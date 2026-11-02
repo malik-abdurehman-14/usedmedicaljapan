@@ -4,6 +4,7 @@ import { Hero } from "@/components/home/hero";
 import { FactStrip } from "@/components/home/fact-strip";
 import { WhyJapan } from "@/components/home/why-japan";
 import { EquipmentGrid } from "@/components/equipment/equipment-grid";
+import { EquipmentRange } from "@/components/equipment/equipment-range";
 import { EquipmentSlider } from "@/components/equipment/equipment-slider";
 import { Section } from "@/components/shared/section";
 import { SectionHeading } from "@/components/shared/section-heading";
@@ -12,16 +13,20 @@ import { FaqList } from "@/components/shared/faq-list";
 import { CtaBand } from "@/components/shared/cta-band";
 import { getEquipmentList } from "@/data/equipment";
 import { getContent } from "@/data/content";
+import { equipmentRange } from "@/data/equipment-range";
 import { alternates, localePath } from "@/lib/i18n";
 
 const copy = {
   en: {
     meta: {},
     equipmentKicker: "Equipment we supply",
-    equipmentTitle: "Nine categories of imaging equipment",
+    equipmentTitle: "Featured imaging equipment",
     equipmentText:
       "From high-field MRI to portable ultrasound. Each category page lists the brands, configurations and documentation you can expect.",
     viewAll: "View all equipment",
+    rangeKicker: "Full equipment range",
+    rangeTitle: "Imaging, surgical, monitoring, laboratory and more",
+    rangeLink: "Explore the full range",
     sliderTitle: "A closer look at the systems",
     sliderText: "Example images by category. Photos and video of the specific unit come with every quotation.",
     slides: {
@@ -75,6 +80,14 @@ export function HomePage({ locale }) {
           </Button>
         </div>
         <EquipmentGrid items={equipment} locale={locale} />
+
+        <div className="mb-10 mt-20 flex flex-col gap-6 md:mt-24 md:flex-row md:items-end md:justify-between">
+          <SectionHeading kicker={c.rangeKicker} title={c.rangeTitle} description={equipmentRange.intro} />
+          <Button asChild variant="outline" className="shrink-0">
+            <Link href={localePath(locale, "/equipment#range")}>{c.rangeLink}</Link>
+          </Button>
+        </div>
+        <EquipmentRange />
       </Section>
 
       <section className="overflow-hidden bg-ink py-20 md:py-28">

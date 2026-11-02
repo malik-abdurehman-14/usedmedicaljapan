@@ -3,21 +3,28 @@ import { Container } from "@/components/shared/container";
 import { EquipmentRow } from "@/components/equipment/equipment-row";
 import { CtaBand } from "@/components/shared/cta-band";
 import { JsonLd } from "@/components/shared/json-ld";
+import { EquipmentRange } from "@/components/equipment/equipment-range";
+import { Section } from "@/components/shared/section";
+import { SectionHeading } from "@/components/shared/section-heading";
 import { getEquipmentList } from "@/data/equipment";
+import { equipmentRange } from "@/data/equipment-range";
 import { site } from "@/data/site";
 import { alternates, localePath } from "@/lib/i18n";
 
 const copy = {
   en: {
     meta: {
-      title: "Used Medical Imaging Equipment for Sale",
+      title: "Used Medical Equipment for Sale",
       description:
-        "Used MRI, CT, PET-CT, SPECT, angiography, C-arm, X-ray, mammography and ultrasound systems from Japan. Inspected and exported worldwide.",
+        "Pre-owned diagnostic imaging, endoscopy, surgical, monitoring and laboratory equipment from Japan, including MRI, CT, X-ray, ultrasound and more. Exported worldwide.",
     },
     breadcrumb: "Equipment",
-    title: "Used medical imaging equipment from Japan",
-    description:
-      "Nine categories of pre-owned imaging systems, sourced from Japanese hospitals and clinics. Stock changes often, so tell us what you need and we will share available units.",
+    title: "Used medical equipment from Japan",
+    description: equipmentRange.intro,
+    rangeTitle: "Full equipment range",
+    rangeText: "Every type of equipment we source in Japan. Tell us what you need and we will share available units.",
+    detailKicker: "Imaging categories",
+    detailTitle: "Imaging equipment in detail",
     jump: "Jump to category",
     ctaTitle: "Need a system that isn't listed?",
     ctaText: "We source other hospital equipment on request. Send us the details and we will check availability in Japan.",
@@ -58,8 +65,13 @@ export function EquipmentPage({ locale }) {
     <>
       <JsonLd data={list} />
       <PageHero breadcrumbs={[{ label: c.breadcrumb }]} locale={locale} title={c.title} description={c.description} />
-      <Container className="py-6 md:py-10">
-        <nav aria-label={c.jump} className="flex flex-wrap gap-2 py-4">
+      <Section tone="paper" id="range" className="scroll-mt-20 py-14 md:py-20">
+        <SectionHeading title={c.rangeTitle} description={c.rangeText} className="mb-10" />
+        <EquipmentRange />
+      </Section>
+      <Container className="pb-6 pt-16 md:pb-10 md:pt-24">
+        <SectionHeading kicker={c.detailKicker} title={c.detailTitle} />
+        <nav aria-label={c.jump} className="flex flex-wrap gap-2 pb-4 pt-8">
           {equipment.map((e) => (
             <a
               key={e.slug}

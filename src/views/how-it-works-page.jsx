@@ -1,11 +1,15 @@
-import { FileText, Info } from "lucide-react";
+import Link from "next/link";
+import { Check, FileText, Info, MessageCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { PageHero } from "@/components/shared/page-hero";
 import { Section } from "@/components/shared/section";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { ProcessTimeline } from "@/components/shared/process-timeline";
 import { CtaBand } from "@/components/shared/cta-band";
 import { getContent } from "@/data/content";
-import { alternates } from "@/lib/i18n";
+import { whatsappLink } from "@/data/site";
+import { alternates, localePath } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
 const copy = {
   en: {
@@ -18,6 +22,34 @@ const copy = {
     title: "How Buying Medical Equipment from Japan Works",
     description:
       "From your initial inquiry to shipment, we guide you through each step of sourcing pre-owned medical equipment from Japan. Our goal is to provide clear information, transparent payment terms, and a smooth purchasing process.",
+    buyers: {
+      kicker: "For international buyers",
+      title: "Looking for a specific medical machine?",
+      text: "Send us your requirements. We can search Japanese sources and present suitable equipment when available.",
+      send: "Send your requirements",
+      whatsapp: "WhatsApp",
+      message: "Hello, I'm looking for a specific medical machine from Japan.",
+      askTitle: "Please Tell Us",
+      ask: [
+        "Equipment type",
+        "Manufacturer",
+        "Model",
+        "Year / preferred age",
+        "Specifications or configuration",
+        "Quantity",
+        "Target budget",
+        "Destination country",
+      ],
+      provideTitle: "What We Can Provide",
+      provide: [
+        "Available equipment information",
+        "Manufacturer / model / year",
+        "Photographs when available",
+        "Condition information based on available records",
+        "Accessories and configuration",
+        "Quotation and shipping arrangement discussion",
+      ],
+    },
     documentsTitle: "Documents you receive",
     documentsText: "The paperwork your bank, customs broker and regulator will usually ask for.",
     documents: [
@@ -77,6 +109,7 @@ export function HowItWorksPage({ locale }) {
       <Section>
         <ProcessTimeline steps={processSteps} variant="vertical" locale={locale} />
       </Section>
+      {c.buyers && <BuyersBrief locale={locale} b={c.buyers} />}
       <Section tone="paper">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
           <SectionHeading title={c.documentsTitle} description={c.documentsText} />
@@ -102,5 +135,53 @@ export function HowItWorksPage({ locale }) {
       </Section>
       <CtaBand locale={locale} title={c.ctaTitle} text={c.ctaText} />
     </>
+  );
+}
+
+/** Requirement brief for buyers looking for a specific machine: what to send and what they get back. */
+function BuyersBrief({ locale, b }) {
+  const lists = [
+    { title: b.askTitle, items: b.ask, numbered: true },
+    { title: b.provideTitle, items: b.provide },
+  ];
+  return (
+    <Section tone="ink" className="py-16 md:py-24">
+      <div className="grid gap-10 lg:grid-cols-[0.85fr_1.5fr] lg:gap-16">
+        <div className="lg:self-center">
+          <SectionHeading kicker={b.kicker} title={b.title} description={b.text} invert />
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Button asChild size="lg" variant="inverse">
+              <Link href={localePath(locale, "/contact")}>{b.send}</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline-inverse">
+              <a href={whatsappLink(b.message)} target="_blank" rel="noopener noreferrer">
+                <MessageCircle /> {b.whatsapp}
+              </a>
+            </Button>
+          </div>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {lists.map((l) => (
+            <div key={l.title} className="rounded-lg border border-white/12 bg-white/[0.04] p-5 md:p-6">
+              <h3 className="text-[1.15rem] text-white">{l.title}</h3>
+              <ul className={cn("mt-4 grid gap-x-4 gap-y-2.5", l.numbered && "min-[360px]:max-sm:grid-cols-2")}>
+                {l.items.map((item, i) => (
+                  <li key={item} className="flex items-start gap-2.5 text-[0.95rem] leading-snug text-white/85">
+                    {l.numbered ? (
+                      <span className="grid size-5 shrink-0 place-items-center rounded-full bg-teal text-[0.7rem] font-semibold text-white">
+                        {i + 1}
+                      </span>
+                    ) : (
+                      <Check className="mt-px size-4 shrink-0 text-teal-tint" aria-hidden />
+                    )}
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Section>
   );
 }
