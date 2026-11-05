@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { CheckCircle2, ChevronDown, Loader2, Mail, MessageCircle, Send } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { CheckCircle2, ChevronDown, Loader2, MessageCircle, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,11 +12,14 @@ import { cn } from "@/lib/utils";
 
 /**
  * Quote request form.
- * Primary: POST to a Google Apps Script web app that appends a row to a Google Sheet
- * (see google-apps-script/quote-form.gs). If NEXT_PUBLIC_SHEETS_ENDPOINT is not set,
- * it falls back to composing an email. WhatsApp is always available.
+ * Primary: POST to a Google Apps Script web app that saves the inquiry to a Google Sheet and
+ * forwards it to the company's WhatsApp (see google-apps-script/quote-form.gs). If
+ * NEXT_PUBLIC_SHEETS_ENDPOINT is not set, it falls back to composing an email.
+ * "Send on WhatsApp" opens the visitor's own WhatsApp with the request filled in.
+ * With NEXT_PUBLIC_TURNSTILE_SITE_KEY set, the primary send needs a Cloudflare Turnstile CAPTCHA.
  */
 const SHEETS_ENDPOINT = process.env.NEXT_PUBLIC_SHEETS_ENDPOINT;
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 const copy = {
   en: {
@@ -25,6 +28,7 @@ const copy = {
       contact: "Add an email address or a WhatsApp number so we can reply.",
       email: "Check the email address.",
       country: "Enter the destination country.",
+      captcha: "Please complete the security check.",
     },
     message: {
       heading: "Quote request: used medical equipment",
@@ -54,14 +58,14 @@ const copy = {
     optional: "(optional)",
     placeholder: "Preferred brands, configuration, budget, timeline, or anything else we should know.",
     sending: "Sending…",
-    send: "Send request",
-    sendEmail: "Send by email",
+    send: "Send inquiry",
     sendWhatsapp: "Send on WhatsApp",
     errorBefore: "Sorry, your request could not be sent. Please try again,",
     errorLink: "send it by email",
     errorAfter: "or use WhatsApp.",
     emailOpened: "Your email app has opened with the request filled in. Press send there to reach us.",
     whatsappOpened: "WhatsApp has opened with your request. Press send there to reach us.",
+    captchaFailed: "The security check failed. Please complete it again and resend.",
     hintSheet: "We reply within one business day. Prefer chat? Send it on WhatsApp instead.",
     hintApps: "Both options open your own app with the request filled in, ready to send.",
   },
@@ -71,6 +75,7 @@ const copy = {
       contact: "返信先として、メールアドレスまたはWhatsApp番号を入力してください。",
       email: "メールアドレスをご確認ください。",
       country: "納入先の国を入力してください。",
+      captcha: "セキュリティ確認を完了してください。",
     },
     message: {
       heading: "お見積り依頼：中古医療機器",
@@ -100,24 +105,47 @@ const copy = {
     optional: "（任意）",
     placeholder: "ご希望のメーカー、構成、ご予算、時期など、お知らせいただきたい内容をご記入ください。",
     sending: "送信中…",
-    send: "送信する",
-    sendEmail: "メールで送信",
+    send: "お問い合わせを送信",
     sendWhatsapp: "WhatsAppで送信",
     errorBefore: "申し訳ありません。送信できませんでした。もう一度お試しいただくか、",
     errorLink: "メールで送信",
     errorAfter: "、またはWhatsAppをご利用ください。",
     emailOpened: "メールアプリが開き、依頼内容が入力されています。そちらで送信してください。",
     whatsappOpened: "WhatsAppが開き、依頼内容が入力されています。そちらで送信してください。",
+    captchaFailed: "セキュリティ確認に失敗しました。もう一度確認してから送信してください。",
     hintSheet: "1営業日以内にご返信します。チャットをご希望の場合は、WhatsAppでも送信できます。",
     hintApps: "どちらのボタンも、依頼内容が入力された状態でお使いのアプリが開きます。",
   },
 };
 
+let turnstileLoader;
+
+/** Loads the Cloudflare Turnstile script once and resolves with `window.turnstile`. */
+function loadTurnstile() {
+  turnstileLoader ??= new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    script.async = true;
+    script.onload = () => resolve(window.turnstile);
+    script.onerror = () => {
+      turnstileLoader = undefined; // allow a retry on the next mount
+      reject(new Error("Turnstile failed to load"));
+    };
+    document.head.appendChild(script);
+  });
+  return turnstileLoader;
+}
+
 export function QuoteForm({ defaultEquipment = "", locale = "en", className, compact = false }) {
   const t = copy[locale];
   const site = getSite(locale);
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState("idle"); // idle | sending | sent | error | email | whatsapp
+  const [status, setStatus] = useState("idle"); // idle | sending | sent | error | captcha | email | whatsapp
+  const useCaptcha = Boolean(SHEETS_ENDPOINT && TURNSTILE_SITE_KEY);
+  const captchaRef = useRef(null);
+  const widgetId = useRef(null);
+  const [token, setToken] = useState("");
+  const formShown = status !== "sent";
   // Options are the range names; `defaultEquipment` and ?equipment= take a category page slug
   const preset = rangeNameBySlug[defaultEquipment] ?? "";
   const [selected, setSelected] = useState(preset);
@@ -128,6 +156,40 @@ export function QuoteForm({ defaultEquipment = "", locale = "en", className, com
     const slug = new URLSearchParams(window.location.search).get("equipment");
     if (rangeNameBySlug[slug]) setSelected(rangeNameBySlug[slug]);
   }, [defaultEquipment]);
+
+  // Render the CAPTCHA whenever the form is on screen (it is replaced by the thank-you message once sent)
+  useEffect(() => {
+    if (!useCaptcha || !formShown) return;
+    let cancelled = false;
+    loadTurnstile()
+      .then((turnstile) => {
+        const el = captchaRef.current;
+        if (cancelled || !el) return;
+        widgetId.current = turnstile.render(el, {
+          sitekey: TURNSTILE_SITE_KEY,
+          size: el.offsetWidth < 300 ? "compact" : "flexible",
+          language: locale,
+          callback: (value) => {
+            setToken(value);
+            setErrors((e) => ({ ...e, captcha: undefined }));
+          },
+          "expired-callback": () => setToken(""),
+          "error-callback": () => setToken(""),
+        });
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+      if (widgetId.current != null) window.turnstile?.remove(widgetId.current);
+      widgetId.current = null;
+      setToken("");
+    };
+  }, [useCaptcha, formShown, locale]);
+
+  function resetCaptcha() {
+    if (widgetId.current != null) window.turnstile?.reset(widgetId.current);
+    setToken("");
+  }
 
   function collect(form) {
     const data = Object.fromEntries(new FormData(form));
@@ -171,16 +233,23 @@ export function QuoteForm({ defaultEquipment = "", locale = "en", className, com
       ...data,
       equipment: data.equipment || "Not decided yet",
       page: window.location.href,
+      token,
     });
     setStatus("sending");
     try {
       const res = await fetch(SHEETS_ENDPOINT, { method: "POST", body });
       const json = await res.json();
+      if (json.error === "captcha") {
+        resetCaptcha();
+        setStatus("captcha");
+        return;
+      }
       if (!json.ok) throw new Error(json.error || "Submission failed");
       form.reset();
       setSelected(preset);
       setStatus("sent");
     } catch {
+      if (useCaptcha) resetCaptcha(); // a token can only be used once
       setStatus("error");
     }
   }
@@ -194,6 +263,8 @@ export function QuoteForm({ defaultEquipment = "", locale = "en", className, com
     } else if (channel === "email-fallback" || !SHEETS_ENDPOINT) {
       openEmail(data);
       setStatus("email");
+    } else if (useCaptcha && !token) {
+      setErrors((e) => ({ ...e, captcha: t.errors.captcha }));
     } else {
       submitToSheet(form, data);
     }
@@ -274,10 +345,17 @@ export function QuoteForm({ defaultEquipment = "", locale = "en", className, com
         <Textarea id="message" name="message" placeholder={t.placeholder} />
       </Field>
 
+      {useCaptcha && (
+        <div>
+          <div ref={captchaRef} className="min-h-[65px]" />
+          {errors.captcha && <p className="mt-2 text-sm text-seal">{errors.captcha}</p>}
+        </div>
+      )}
+
       <div className="flex flex-col gap-3 pt-1 sm:flex-row">
         <Button type="submit" size="lg" className="sm:flex-1" disabled={sending}>
-          {sending ? <Loader2 className="animate-spin" /> : SHEETS_ENDPOINT ? <Send /> : <Mail />}
-          {sending ? t.sending : SHEETS_ENDPOINT ? t.send : t.sendEmail}
+          {sending ? <Loader2 className="animate-spin" /> : <Send />}
+          {sending ? t.sending : t.send}
         </Button>
         <Button
           type="button"
@@ -290,7 +368,7 @@ export function QuoteForm({ defaultEquipment = "", locale = "en", className, com
           <MessageCircle /> {t.sendWhatsapp}
         </Button>
       </div>
-      <p className={cn("text-sm", status === "error" ? "text-seal" : "text-slate")} role="status" aria-live="polite">
+      <p className={cn("text-sm", status === "error" || status === "captcha" ? "text-seal" : "text-slate")} role="status" aria-live="polite">
         {status === "error" && (
           <>
             {t.errorBefore}
@@ -302,6 +380,7 @@ export function QuoteForm({ defaultEquipment = "", locale = "en", className, com
             {t.errorAfter}
           </>
         )}
+        {status === "captcha" && t.captchaFailed}
         {status === "email" && t.emailOpened}
         {status === "whatsapp" && t.whatsappOpened}
         {(status === "idle" || status === "sending") && (SHEETS_ENDPOINT ? t.hintSheet : t.hintApps)}

@@ -53,7 +53,7 @@ const slideImages = {
   "used-mri-machines": "/images/equipment/mri-render.webp",
   "used-spect-gamma-cameras": "/images/equipment/spect-ct.webp",
   "used-mammography-machines": "/images/equipment/mammography.webp",
-  "used-c-arm-systems": "/images/equipment/c-arm-or.webp",
+  "used-c-arm-systems": "/images/equipment/c-arm-blue.webp",
 };
 
 export const homeMetadata = (locale) => ({ ...copy[locale].meta, alternates: alternates(locale, "/") });

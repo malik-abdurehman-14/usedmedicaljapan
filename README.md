@@ -7,22 +7,39 @@ Static site. The quote form saves requests to a Google Sheet through a Google Ap
 Requires Node.js 20 or newer.
 
     npm install
-    cp .env.example .env.local   # then add the Apps Script URL
+    cp .env.example .env.local   # then add the Apps Script URL (and Turnstile key)
     npm run dev        # http://localhost:3000
 
-## Quote form → Google Sheets
+## Quote form → Google Sheet + WhatsApp
+"Send inquiry" posts to a Google Apps Script web app, which checks the CAPTCHA, saves the inquiry
+to a Google Sheet and forwards it to the company's WhatsApp (and email). "Send on WhatsApp" opens the
+visitor's own WhatsApp with the request filled in.
+
 1. Create a Google Sheet, open **Extensions → Apps Script**, paste in `google-apps-script/quote-form.gs`,
    set `NOTIFY_EMAIL` at the top (or `""` for no emails) and save.
 2. **Deploy → New deployment → Web app**, Execute as **Me**, Who has access **Anyone**. Approve the
    permissions (on the "unverified app" screen: Advanced → Go to project → Allow — it's your own script).
-3. Copy the Web app URL (ends in `/exec`) into `.env.local` and your host's environment variables:
+3. Put the Web app URL (ends in `/exec`) in `.env.production` (live site) and `.env.local` (local):
 
        NEXT_PUBLIC_SHEETS_ENDPOINT=https://script.google.com/macros/s/XXXX/exec
 
-4. Restart / redeploy (the value is baked in at build time) and send a test request.
-
 After editing the script use **Manage deployments → Edit → New version** to keep the same URL.
-Without the variable, the form falls back to opening the visitor's email app; WhatsApp always works.
+Without the URL, the form falls back to opening the visitor's email app.
+
+### WhatsApp notification (CallMeBot)
+1. On the phone with the receiving WhatsApp number, add the CallMeBot number shown on
+   https://www.callmebot.com/blog/free-api-whatsapp-messages/ and send it: `I allow callmebot to send me messages`
+2. CallMeBot replies with an API key.
+3. In Apps Script → **Project Settings → Script properties**, add `CALLMEBOT_PHONE` (digits only,
+   e.g. `819061170042`) and `CALLMEBOT_APIKEY`. Each inquiry then arrives as a WhatsApp message.
+
+### CAPTCHA (Cloudflare Turnstile)
+1. In a free Cloudflare account: **Turnstile → Add widget**, add the domains `usedmedicaljapan.com`
+   and the Netlify domain, mode **Managed**.
+2. Put the **site key** in `.env.production` as `NEXT_PUBLIC_TURNSTILE_SITE_KEY`.
+3. Put the **secret key** in Apps Script → Script properties as `TURNSTILE_SECRET`.
+
+Both keys are needed: the site key shows the check, the secret key makes the script reject requests without it.
 
 Production check:
 

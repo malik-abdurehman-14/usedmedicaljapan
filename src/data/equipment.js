@@ -15,7 +15,7 @@ export const equipment = [
     modality: "MR",
     featured: true,
     image: img("mri-suite.webp"),
-    gallery: [img("mri-suite.webp"), img("mri-room.webp"), img("mri-render.webp"), img("scanner-controls.webp")],
+    gallery: [img("mri-suite.webp"), img("mri-room.webp"), img("mri-render.webp")],
     summary: "Closed-bore and open MRI from 0.3T to 3.0T, with coils and workstation.",
     intro:
       "Pre-owned 1.5T and 3.0T closed-bore systems and low-field open MRI, removed from hospitals in Japan and checked before export.",
@@ -65,7 +65,7 @@ export const equipment = [
     modality: "CT",
     featured: true,
     image: img("ct-modern.webp"),
-    gallery: [img("ct-modern.webp"), img("ct-eclos.webp"), img("ct-lightspeed.webp"), img("ct-room.webp"), img("ct-bore.webp"), img("ct-somatom.webp")],
+    gallery: [img("ct-modern.webp"), img("ct-eclos.webp"), img("ct-lightspeed.webp"), img("ct-room.webp"), img("ct-somatom.webp")],
     summary: "16 to 128-slice CT with tube history, from leading manufacturers.",
     intro:
       "Multi-slice CT scanners from 16 to 128 slices, sourced from Japanese hospitals with tube scan history and service records where available.",
@@ -241,8 +241,8 @@ export const equipment = [
     plural: "C-arm systems",
     singular: "C-arm",
     modality: "RF",
-    image: img("c-arm-or.webp"),
-    gallery: [img("c-arm-or.webp"), img("c-arm.webp"), img("c-arm-blue.webp")],
+    image: img("c-arm-blue.webp"),
+    gallery: [img("c-arm-blue.webp"), img("c-arm.webp")],
     summary: "Mobile surgical C-arms with flat panel or image intensifier.",
     intro:
       "Mobile C-arms for orthopaedic, general, urology and pain management procedures, with flat panel or image intensifier detectors.",
