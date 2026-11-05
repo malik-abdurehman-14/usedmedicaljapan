@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import { CheckCircle2, ChevronDown, Loader2, MessageCircle, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,10 +17,10 @@ import { cn } from "@/lib/utils";
  * forwards it to the company's WhatsApp (see google-apps-script/quote-form.gs). If
  * NEXT_PUBLIC_SHEETS_ENDPOINT is not set, it falls back to composing an email.
  * "Send on WhatsApp" opens the visitor's own WhatsApp with the request filled in.
- * With NEXT_PUBLIC_TURNSTILE_SITE_KEY set, the primary send needs a Cloudflare Turnstile CAPTCHA.
+ * With NEXT_PUBLIC_RECAPTCHA_SITE_KEY set, the primary send needs a Google reCAPTCHA v2 check.
  */
 const SHEETS_ENDPOINT = process.env.NEXT_PUBLIC_SHEETS_ENDPOINT;
-const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
 const copy = {
   en: {
@@ -118,34 +119,16 @@ const copy = {
   },
 };
 
-let turnstileLoader;
-
-/** Loads the Cloudflare Turnstile script once and resolves with `window.turnstile`. */
-function loadTurnstile() {
-  turnstileLoader ??= new Promise((resolve, reject) => {
-    const script = document.createElement("script");
-    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
-    script.async = true;
-    script.onload = () => resolve(window.turnstile);
-    script.onerror = () => {
-      turnstileLoader = undefined; // allow a retry on the next mount
-      reject(new Error("Turnstile failed to load"));
-    };
-    document.head.appendChild(script);
-  });
-  return turnstileLoader;
-}
-
 export function QuoteForm({ defaultEquipment = "", locale = "en", className, compact = false }) {
   const t = copy[locale];
   const site = getSite(locale);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error | captcha | email | whatsapp
-  const useCaptcha = Boolean(SHEETS_ENDPOINT && TURNSTILE_SITE_KEY);
+  const useCaptcha = Boolean(SHEETS_ENDPOINT && RECAPTCHA_SITE_KEY);
   const captchaRef = useRef(null);
-  const widgetId = useRef(null);
   const [token, setToken] = useState("");
-  const formShown = status !== "sent";
+  // The standard checkbox is 304px wide; very narrow phones get the compact one
+  const [compactCaptcha, setCompactCaptcha] = useState(false);
   // Options are the range names; `defaultEquipment` and ?equipment= take a category page slug
   const preset = rangeNameBySlug[defaultEquipment] ?? "";
   const [selected, setSelected] = useState(preset);
@@ -157,37 +140,12 @@ export function QuoteForm({ defaultEquipment = "", locale = "en", className, com
     if (rangeNameBySlug[slug]) setSelected(rangeNameBySlug[slug]);
   }, [defaultEquipment]);
 
-  // Render the CAPTCHA whenever the form is on screen (it is replaced by the thank-you message once sent)
   useEffect(() => {
-    if (!useCaptcha || !formShown) return;
-    let cancelled = false;
-    loadTurnstile()
-      .then((turnstile) => {
-        const el = captchaRef.current;
-        if (cancelled || !el) return;
-        widgetId.current = turnstile.render(el, {
-          sitekey: TURNSTILE_SITE_KEY,
-          size: el.offsetWidth < 300 ? "compact" : "flexible",
-          language: locale,
-          callback: (value) => {
-            setToken(value);
-            setErrors((e) => ({ ...e, captcha: undefined }));
-          },
-          "expired-callback": () => setToken(""),
-          "error-callback": () => setToken(""),
-        });
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-      if (widgetId.current != null) window.turnstile?.remove(widgetId.current);
-      widgetId.current = null;
-      setToken("");
-    };
-  }, [useCaptcha, formShown, locale]);
+    if (useCaptcha) setCompactCaptcha(window.matchMedia("(max-width: 359px)").matches);
+  }, [useCaptcha]);
 
   function resetCaptcha() {
-    if (widgetId.current != null) window.turnstile?.reset(widgetId.current);
+    captchaRef.current?.reset();
     setToken("");
   }
 
@@ -247,6 +205,7 @@ export function QuoteForm({ defaultEquipment = "", locale = "en", className, com
       if (!json.ok) throw new Error(json.error || "Submission failed");
       form.reset();
       setSelected(preset);
+      setToken("");
       setStatus("sent");
     } catch {
       if (useCaptcha) resetCaptcha(); // a token can only be used once
@@ -347,7 +306,19 @@ export function QuoteForm({ defaultEquipment = "", locale = "en", className, com
 
       {useCaptcha && (
         <div>
-          <div ref={captchaRef} className="min-h-[65px]" />
+          <ReCAPTCHA
+            ref={captchaRef}
+            sitekey={RECAPTCHA_SITE_KEY}
+            hl={locale}
+            size={compactCaptcha ? "compact" : "normal"}
+            onChange={(value) => {
+              setToken(value ?? "");
+              if (value) setErrors((e) => ({ ...e, captcha: undefined }));
+            }}
+            onExpired={() => setToken("")}
+            onErrored={() => setToken("")}
+            className="min-h-[78px]"
+          />
           {errors.captcha && <p className="mt-2 text-sm text-seal">{errors.captcha}</p>}
         </div>
       )}

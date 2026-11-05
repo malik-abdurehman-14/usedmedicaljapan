@@ -5,7 +5,7 @@
  * collect the requests, then deploy it as a Web app (see README.md).
  *
  * Secrets live in Project Settings → Script properties, not in this file:
- *   TURNSTILE_SECRET   Cloudflare Turnstile secret key (CAPTCHA). Unset → no CAPTCHA check.
+ *   RECAPTCHA_SECRET   Google reCAPTCHA v2 secret key. Unset → no CAPTCHA check.
  *   CALLMEBOT_PHONE    WhatsApp number that receives each inquiry, digits only (e.g. 819061170042).
  *   CALLMEBOT_APIKEY   API key CallMeBot sends to that number. Unset → no WhatsApp message.
  */
@@ -99,10 +99,10 @@ function notify(p) {
 }
 
 function passesCaptcha(token) {
-  const secret = PropertiesService.getScriptProperties().getProperty("TURNSTILE_SECRET");
+  const secret = PropertiesService.getScriptProperties().getProperty("RECAPTCHA_SECRET");
   if (!secret) return true;
   if (!token) return false;
-  const res = UrlFetchApp.fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+  const res = UrlFetchApp.fetch("https://www.google.com/recaptcha/api/siteverify", {
     method: "post",
     payload: { secret: secret, response: token },
     muteHttpExceptions: true,

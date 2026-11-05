@@ -7,7 +7,7 @@ Static site. The quote form saves requests to a Google Sheet through a Google Ap
 Requires Node.js 20 or newer.
 
     npm install
-    cp .env.example .env.local   # then add the Apps Script URL (and Turnstile key)
+    cp .env.example .env.local   # then add the Apps Script URL (and reCAPTCHA site key)
     npm run dev        # http://localhost:3000
 
 ## Quote form → Google Sheet + WhatsApp
@@ -33,11 +33,11 @@ Without the URL, the form falls back to opening the visitor's email app.
 3. In Apps Script → **Project Settings → Script properties**, add `CALLMEBOT_PHONE` (digits only,
    e.g. `819061170042`) and `CALLMEBOT_APIKEY`. Each inquiry then arrives as a WhatsApp message.
 
-### CAPTCHA (Cloudflare Turnstile)
-1. In a free Cloudflare account: **Turnstile → Add widget**, add the domains `usedmedicaljapan.com`
-   and the Netlify domain, mode **Managed**.
-2. Put the **site key** in `.env.production` as `NEXT_PUBLIC_TURNSTILE_SITE_KEY`.
-3. Put the **secret key** in Apps Script → Script properties as `TURNSTILE_SECRET`.
+### CAPTCHA (Google reCAPTCHA v2)
+1. At https://www.google.com/recaptcha/admin create a **reCAPTCHA v2 → "I'm not a robot" Checkbox** key,
+   with the domains `usedmedicaljapan.com`, the Netlify domain and `localhost`.
+2. Put the **site key** in `.env.production` (and `.env.local`) as `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`.
+3. Put the **secret key** in Apps Script → Script properties as `RECAPTCHA_SECRET`.
 
 Both keys are needed: the site key shows the check, the secret key makes the script reject requests without it.
 
