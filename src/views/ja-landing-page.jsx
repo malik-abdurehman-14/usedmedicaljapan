@@ -80,7 +80,7 @@ export function JaLandingPage() {
               <span className="size-2 rounded-full bg-seal" aria-hidden />
               日本国内の医療機器売主様へ
             </p>
-            <h1 className="text-[clamp(1.9rem,4vw,3.3rem)]">使用済み医療機器を、適正価格で買い取ります。</h1>
+            <h1 className="text-[clamp(1.9rem,4vw,3.3rem)]">中古医療機器を、適正価格で買い取ります。</h1>
             <p className="mt-7 max-w-[38em] text-lead text-slate">
               海外販売を前提として、日本国内の中古医療機器を探しています。病院、医療機器販売会社、リース関連会社、クリニック、その他不要となった医療機器をお持ちの法人様からのご相談を歓迎します。
             </p>
