@@ -16,7 +16,7 @@ const copy = {
     meta: {
       title: "Used Medical Equipment for Sale",
       description:
-        "Pre-owned diagnostic imaging, endoscopy, surgical, monitoring and laboratory equipment from Japan, including MRI, CT, X-ray, ultrasound and more. Exported worldwide.",
+        "Used Medical Equipment Japan supplies pre-owned imaging, endoscopy, surgical, monitoring and laboratory equipment, including MRI, CT and X-ray. Exported worldwide.",
     },
     breadcrumb: "Equipment",
     title: "Used medical equipment from Japan",

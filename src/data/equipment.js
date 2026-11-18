@@ -9,9 +9,9 @@ const img = (file) => `/images/equipment/${file}`;
 export const equipment = [
   {
     slug: "used-mri-machines",
-    name: "MRI Systems",
-    plural: "MRI systems",
-    singular: "MRI system",
+    name: "MRI Machines",
+    plural: "MRI machines",
+    singular: "MRI machine",
     modality: "MR",
     featured: true,
     image: img("mri-ge-room.webp"),

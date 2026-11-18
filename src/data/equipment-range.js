@@ -9,7 +9,7 @@ export const equipmentRange = {
       id: "imaging",
       title: "Diagnostic Imaging",
       items: [
-        { name: "MRI systems" },
+        { name: "MRI machines" },
         { name: "CT scanners" },
         { name: "X-Ray systems" },
         { name: "Mobile X-Ray systems" },
@@ -68,7 +68,7 @@ export const equipmentRange = {
 
 /** Category page → its name in the range, so product pages can pre-select the quote form. */
 export const rangeNameBySlug = {
-  "used-mri-machines": "MRI systems",
+  "used-mri-machines": "MRI machines",
   "used-ct-scanners": "CT scanners",
   "used-pet-ct-scanners": "PET/CT and related imaging equipment",
   "used-spect-gamma-cameras": "PET/CT and related imaging equipment",

@@ -12,7 +12,7 @@ const copy = {
     meta: {
       title: "About Us",
       description:
-        "A Japan-based supplier of used medical imaging equipment, connecting Japanese hospitals with buyers worldwide.",
+        "Used Medical Equipment Japan (SK Global Co., Ltd., Tokyo) connects Japanese hospitals upgrading their equipment with healthcare providers worldwide.",
     },
     breadcrumb: "About",
     kicker: "About us",

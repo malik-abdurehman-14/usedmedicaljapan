@@ -15,7 +15,7 @@ const copy = {
     meta: {
       title: "Services: Sourcing, Inspection and Export",
       description:
-        "Sourcing, inspection, de-installation, export crating, documentation and shipping for used medical imaging equipment from Japan.",
+        "Used Medical Equipment Japan handles sourcing, inspection, de-installation, export crating, documentation and shipping of used medical equipment from Japan.",
     },
     breadcrumb: "Services",
     title: "From Japanese Hospitals to Healthcare Providers Worldwide",

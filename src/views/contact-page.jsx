@@ -10,7 +10,7 @@ const copy = {
   en: {
     meta: {
       title: "Contact Us and Request a Quote",
-      description: "Request a quote for used MRI, CT, X-ray, ultrasound and other imaging equipment from Japan.",
+      description: "Contact Used Medical Equipment Japan to request a quote for used MRI, CT, X-ray, ultrasound and other medical equipment from Japan.",
     },
     breadcrumb: "Contact",
     title: "Request a quote",

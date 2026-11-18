@@ -6,7 +6,7 @@ export const site = {
   shortName: "Used Medical Equipment Japan",
   url: "https://usedmedicaljapan.com",
   description:
-    "Pre-owned MRI, CT, PET-CT, X-ray, C-arm, mammography and ultrasound systems sourced from hospitals in Japan, inspected and exported worldwide.",
+    "Used Medical Equipment Japan supplies pre-owned MRI, CT, X-ray, ultrasound and other medical equipment from hospitals in Japan, inspected and exported worldwide.",
   email: "info@usedmedicaljapan.com", // [confirm mailbox]
   phone: "+81 03-6435-4449",
   phoneHref: "tel:+81364354449",
