@@ -21,7 +21,7 @@ export const metadata = {
     siteName: site.name,
     locale: "en_US",
     url: "/",
-    images: [{ url: "/images/equipment/mri-suite.webp", width: 1280, height: 1280, alt: "MRI system" }],
+    images: [{ url: "/images/equipment/mri-ge-room.webp", width: 1320, height: 988, alt: "MRI system" }],
   },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },

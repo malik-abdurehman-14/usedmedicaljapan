@@ -91,7 +91,7 @@ export function Hero({ locale = "en" }) {
             transition={reduce ? { duration: 0 } : { duration: 1.1, delay: 0.15, ease }}
           >
             <Image
-              src="/images/equipment/mri-room.webp"
+              src="/images/equipment/mri-ge-signa-voyager.webp"
               alt={c.imageAlt}
               fill
               priority

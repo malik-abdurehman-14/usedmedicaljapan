@@ -50,7 +50,7 @@ const copy = {
 const slideImages = {
   "used-ct-scanners": "/images/equipment/ct-eclos.webp",
   "used-pet-ct-scanners": "/images/equipment/pet-ct.webp",
-  "used-mri-machines": "/images/equipment/mri-render.webp",
+  "used-mri-machines": "/images/equipment/mri-siemens-magnetom-aera.webp",
   "used-spect-gamma-cameras": "/images/equipment/spect-ct.webp",
   "used-mammography-machines": "/images/equipment/mammography.webp",
   "used-c-arm-systems": "/images/equipment/c-arm-blue.webp",

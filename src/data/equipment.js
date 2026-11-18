@@ -14,8 +14,15 @@ export const equipment = [
     singular: "MRI system",
     modality: "MR",
     featured: true,
-    image: img("mri-suite.webp"),
-    gallery: [img("mri-suite.webp"), img("mri-room.webp"), img("mri-render.webp")],
+    image: img("mri-ge-room.webp"),
+    gallery: [
+      img("mri-ge-room.webp"),
+      img("mri-ge-signa-voyager.webp"),
+      img("mri-ge-signa-explorer.webp"),
+      img("mri-siemens-magnetom-aera.webp"),
+      img("mri-hitachi-airis-vento.webp"),
+      img("mri-ge-system-cabinets.webp"),
+    ],
     summary: "Closed-bore and open MRI from 0.3T to 3.0T, with coils and workstation.",
     intro:
       "Pre-owned 1.5T and 3.0T closed-bore systems and low-field open MRI, removed from hospitals in Japan and checked before export.",
